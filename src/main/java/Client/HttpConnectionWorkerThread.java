@@ -1,17 +1,20 @@
-package VVS.httpserver.core;
+package Client;
+
+import Server.ServerListenerThread;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
 public class HttpConnectionWorkerThread extends Thread {
 
     private Socket socket;
+    private ServerListenerThread serverListenerThread;
 
-    public HttpConnectionWorkerThread(Socket socket) {
+    public HttpConnectionWorkerThread(Socket socket, ServerListenerThread serverListenerThread) {
         this.socket = socket;
+        this.serverListenerThread = serverListenerThread;
     }
 
     @Override
@@ -42,8 +45,11 @@ public class HttpConnectionWorkerThread extends Thread {
                             html +
                             CRLF + CRLF;
             outputStream.write(response.getBytes());
-
-            out.println("--------Connection Processing Finished-------");
+            if (serverListenerThread.getServerStatus()) {
+                out.println("--------Connection Processing Finished-------" + " Running");
+            } else {
+                out.println("--------Connection Processing Finished-------" + " Maintenance");
+            }
         } catch (IOException e) {
             System.err.println("Problem with comunication:\n" + e);
             e.printStackTrace();
