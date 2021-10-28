@@ -1,9 +1,10 @@
 package VVS.httpserver.core;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.util.stream.Collectors;
+
+import static java.lang.System.out;
 
 public class HttpConnectionWorkerThread extends Thread {
 
@@ -22,6 +23,15 @@ public class HttpConnectionWorkerThread extends Thread {
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
 
+
+            File web_root = new File(".");
+            String default_file = "index.html";
+            File file = new File(web_root, default_file);
+            InputStream in = this.getClass().getClassLoader()
+                    .getResourceAsStream("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\index.html");
+            //String s = new BufferedReader(new InputStreamReader(in))
+              //      .lines().collect(Collectors.joining("\n"));
+            //out.println(s);
             String html = "<html><head><title>Simple Java Server</title></head><body><h1>Server using simple Java HTTP server</h1></body></html>";
             final String CRLF = "\n\r";
 
@@ -33,7 +43,7 @@ public class HttpConnectionWorkerThread extends Thread {
                             CRLF + CRLF;
             outputStream.write(response.getBytes());
 
-            System.out.println("--------Connection Processing Finished-------");
+            out.println("--------Connection Processing Finished-------");
         } catch (IOException e) {
             System.err.println("Problem with comunication:\n" + e);
             e.printStackTrace();

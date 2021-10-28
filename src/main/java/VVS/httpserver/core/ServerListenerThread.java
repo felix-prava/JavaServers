@@ -18,6 +18,10 @@ public class ServerListenerThread extends Thread{
         this.serverSocket = new ServerSocket(this.port);
     }
 
+    public void test() {
+        this.start();
+    }
+
     @Override
     public void run() {
         super.run();
@@ -30,8 +34,8 @@ public class ServerListenerThread extends Thread{
                 workerThread.start();
             }
         } catch (IOException e) {
-            System.err.println("Problem with setting socket:\n" + e);
-            e.printStackTrace();
+            System.err.println("Problem with setting socket:\n");
+            System.err.println(e);
         } finally {
             if (serverSocket != null) {
                 try {
