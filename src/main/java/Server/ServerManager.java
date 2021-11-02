@@ -1,7 +1,5 @@
 package Server;
 
-import Admin.ServerState;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -13,6 +11,7 @@ public class ServerManager {
 
     public void setPort(int port) {
         this.port = port;
+        System.out.println("AAA " + this.port);
     }
 
     public void setRootDirectory(String rootDirectory) {
