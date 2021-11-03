@@ -4,6 +4,11 @@ import Server.ServerListenerThread;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
 
 import static java.lang.System.out;
 
@@ -11,6 +16,21 @@ public class HttpConnectionWorkerThread extends Thread {
 
     private Socket socket;
     private ServerListenerThread serverListenerThread;
+
+    private byte[] readFileData(File file, int fileLength) throws IOException {
+        FileInputStream fileIn = null;
+        byte[] fileData = new byte[fileLength];
+
+        try {
+            fileIn = new FileInputStream(file);
+            fileIn.read(fileData);
+        } finally {
+            if (fileIn != null)
+                fileIn.close();
+        }
+
+        return fileData;
+    }
 
     public HttpConnectionWorkerThread(Socket socket, ServerListenerThread serverListenerThread) {
         this.socket = socket;
@@ -23,21 +43,30 @@ public class HttpConnectionWorkerThread extends Thread {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         try {
+            InputStreamReader isr = new InputStreamReader(socket.getInputStream());
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder request = new StringBuilder();
+            String line, resource = "";
+            line = br.readLine();
+            while (line != null && !line.isBlank()) {
+                request.append(line + "\r\n");
+                if (line.startsWith("Referer: http://localhost")) {
+                    int length = line.split("/").length;
+                    resource = "/" + line.split("/")[length - 1];
+                }
+                line = br.readLine();
+            }
+            String firstLine = request.toString().split("\n")[0];
+            //String firstLineResource = firstLine.split(" ")[1];
+            out.println(resource);
+
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
+            String css = Files.readString(Paths.get("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\style.css"), StandardCharsets.US_ASCII);
 
-
-            File web_root = new File(".");
-            String default_file = "index.html";
-            File file = new File(web_root, default_file);
-            InputStream in = this.getClass().getClassLoader()
-                    .getResourceAsStream("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\index.html");
-            //String s = new BufferedReader(new InputStreamReader(in))
-              //      .lines().collect(Collectors.joining("\n"));
-            //out.println(s);
-            String html = "<html><head><title>Simple Java Server</title></head><body><h1>Server using simple Java HTTP server</h1></body></html>";
+            String html = getResponse(resource);
             final String CRLF = "\n\r";
-
+            html += css;
             String response =
                     "HTTP/1.1 200 OK" + CRLF +
                             "Content-Length: " + html.getBytes().length + CRLF +
@@ -76,5 +105,24 @@ public class HttpConnectionWorkerThread extends Thread {
                 }
             }
         }
+    }
+
+    public String getResponse(String resource) throws IOException {
+        String path = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\";
+        out.println(resource);
+        if (resource.equals("/") || resource.equals("/index.html") || resource.equals("/localhost:3000")) {
+            path += "index.html";
+            out.println("Homeee");
+        } else if (resource.equals("/aboutUs.html")) {
+            path += "aboutUs.html";
+        } else if (resource.equals("/careers.html")) {
+            path += "careers.html";
+        } else if (resource.equals("/customers.html")) {
+            path += "customers.html";
+        } else {
+            out.println("Howww");
+            return "<html><head><title>Simple Java Server</title></head><body><h1>Server using simple Java HTTP server</h1></body></html>";
+        }
+        return Files.readString(Paths.get(path), StandardCharsets.US_ASCII);
     }
 }
