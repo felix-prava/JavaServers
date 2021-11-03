@@ -2,6 +2,7 @@ package Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.HashMap;
 
 public class ServerManager {
     private int port = 3000;
@@ -9,20 +10,27 @@ public class ServerManager {
     private String maintenanceDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\maintenanceDirectory\\";
     private static ServerListenerThread serverListenerThread = null;
     private boolean serverISRunning = false;
+    private HashMap<String, String> resourceMap;
 
     public void setPort(int port) {
         this.port = port;
-        serverListenerThread.setPort(port);
+        if (serverListenerThread != null) {
+            serverListenerThread.setPort(port);
+        }
     }
 
     public void setRootDirectory(String rootDirectory) {
         this.rootDirectory = rootDirectory;
-        serverListenerThread.setRootDirectory(rootDirectory);
+        if (serverListenerThread != null) {
+            serverListenerThread.setRootDirectory(rootDirectory);
+        }
     }
 
     public void setMaintenanceDirectory(String maintenanceDirectory) {
         this.maintenanceDirectory = maintenanceDirectory;
-        serverListenerThread.setMaintenanceDirectory(maintenanceDirectory);
+        if (serverListenerThread != null) {
+            serverListenerThread.setMaintenanceDirectory(maintenanceDirectory);
+        }
     }
 
     public void setServerOnMaintenanceMode() {
@@ -54,17 +62,24 @@ public class ServerManager {
         }
         serverListenerThread = null;
         serverISRunning = false;
-
     }
 
     public void openServer() {
         if (serverListenerThread == null) {
             try {
-                serverListenerThread = new ServerListenerThread(port, rootDirectory, maintenanceDirectory);
+                serverListenerThread = new ServerListenerThread(port, rootDirectory, maintenanceDirectory, this);
                 serverListenerThread.start();
             } catch (IOException e) {
                 System.out.println("Input Output Exception");
             }
         }
+    }
+
+    public void setResourceMap(HashMap<String, String> resourceMap) {
+        this.resourceMap = resourceMap;
+    }
+
+    public HashMap<String, String> getResourceMap() {
+        return resourceMap;
     }
 }

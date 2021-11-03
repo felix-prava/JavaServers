@@ -2,8 +2,12 @@ package Admin;
 
 import Server.ServerListenerThread;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -17,6 +21,7 @@ public class ServerState {
     private String maintenanceDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\maintenanceDirectory\\";
     private ServerListenerThread serverListenerThread = null;
     private boolean serverISRunning = false, serverIsOnMaintenanceMode = false;
+    private HashMap<String, String> resourceMap = new HashMap<>();
 
     public ServerState(int state) { this.state = state; }
 
@@ -45,7 +50,7 @@ public class ServerState {
         } else if (receivedState == currentState) {
             System.out.println("The server is already in this state\n");
             return -10;
-        } else if (receivedState > 2 && receivedState < 6) {
+        } else if (receivedState > 2) {
             if (!serverISRunning) {
                 if (receivedState == 3) {
                     System.out.print("Type the value of the new port: ");
@@ -59,39 +64,65 @@ public class ServerState {
                     System.out.println("The new port is: " + this.port + "\n");
                     return 3;
                 } else if (receivedState == 4) {
-                    System.out.print("Type the value of the new root directory: ");
+                    System.out.print("Type the path of the new root directory: ");
                     String newRootDirectory = scan.nextLine();
                     System.out.println();
+                    if (!pathIsCorrect(newRootDirectory, true)) {
+                        return -10;
+                    }
+                    if (!newRootDirectory.endsWith("\\")) {
+                        newRootDirectory += "\\";
+                    }
                     this.rootDirectory = newRootDirectory;
-                    System.out.println("The new root directory is: " + this.rootDirectory + "\n");
+                    updateResources();
+                    System.out.println("The new root directory path is: " + this.rootDirectory + "\n");
                     return 4;
                 } else {
-                    System.out.print("Type the value of the new maintenance directory: ");
+                    System.out.print("Type the path of the new maintenance directory: ");
                     String newMaintenanceDirectory = scan.nextLine();
                     System.out.println();
+                    if (!pathIsCorrect(newMaintenanceDirectory, false)) {
+                        return -10;
+                    }
+                    if (!newMaintenanceDirectory.endsWith("\\")) {
+                        newMaintenanceDirectory += "\\";
+                    }
                     this.maintenanceDirectory = newMaintenanceDirectory;
-                    System.out.println("The new maintenance directory is: " + this.maintenanceDirectory + "\n");
+                    System.out.println("The new maintenance directory path is: " + this.maintenanceDirectory + "\n");
                     return 5;
                 }
             } else {
                 if (currentState == 1) {
                     if (receivedState == 5) {
-                        System.out.print("Type the value of the new maintenance directory: ");
+                        System.out.print("Type the path of the new maintenance directory: ");
                         String newMaintenanceDirectory = scan.nextLine();
                         System.out.println();
+                        if (!pathIsCorrect(newMaintenanceDirectory, false)) {
+                            return -10;
+                        }
+                        if (!newMaintenanceDirectory.endsWith("\\")) {
+                            newMaintenanceDirectory += "\\";
+                        }
                         this.maintenanceDirectory = newMaintenanceDirectory;
-                        System.out.println("The new maintenance directory is: " + this.maintenanceDirectory + "\n");
+                        System.out.println("The new maintenance directory path is: " + this.maintenanceDirectory + "\n");
                         return 5;
                     }
                     System.out.println("This is not a valid state\n");
                 }
                 if (currentState == 2) {
                     if (receivedState == 4) {
-                        System.out.print("Type the value of the new root directory: ");
+                        System.out.print("Type the path of the new root directory: ");
                         String newRootDirectory = scan.nextLine();
                         System.out.println();
+                        if (!pathIsCorrect(newRootDirectory, true)) {
+                            return -10;
+                        }
+                        if (!newRootDirectory.endsWith("\\")) {
+                            newRootDirectory += "\\";
+                        }
                         this.rootDirectory = newRootDirectory;
-                        System.out.println("The new root directory is: " + this.rootDirectory + "\n");
+                        updateResources();
+                        System.out.println("The new root directory path is: " + this.rootDirectory + "\n");
                         return 4;
                     }
                     System.out.println("This is not a valid state\n");
@@ -106,6 +137,44 @@ public class ServerState {
         }
     }
 
+    private void updateResources() {
+        resourceMap.clear();
+        File[] files = new File(rootDirectory).listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                if (file.getName().endsWith(".html")) {
+                    if (file.getName().equals("index.html")) {
+                        resourceMap.put("/", "index.html");
+                        resourceMap.put("/index.html", "index.html");
+                        resourceMap.put("/localhost:3000", "index.html");
+                    } else {
+                        resourceMap.put("/" + file.getName(), file.getName());
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean pathIsCorrect(String directoryPath, boolean isRootDirectory) {
+        File directory = new File(directoryPath);
+        if (!directory.isDirectory()) {
+            System.out.println("This path does not correspond to a directory\n");
+            return false;
+        }
+        if (isRootDirectory) {
+            if (!new File(directoryPath, "pageNotFound.html").exists()) {
+                System.out.println("This directory does not have a pageNotFound.html file\n");
+                return false;
+            }
+        } else {
+            if (!new File(directoryPath, "maintenance.html").exists()) {
+                System.out.println("This directory does not have a maintenance.html file\n");
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void initializeOptions() {
         menu = new HashMap<>();
         menu.put(-1, "Close the program");
@@ -118,6 +187,7 @@ public class ServerState {
         menu.put(100, " and this means that the server is stopped");
         menu.put(101, " and this means that the server is in normal mode");
         menu.put(102, " and this means that the server is in maintenance mode");
+        updateResources();
     }
 
     public void showMenu(int currentState) {
@@ -162,6 +232,10 @@ public class ServerState {
 
     public String getMaintenanceDirectory() {
         return maintenanceDirectory;
+    }
+
+    public HashMap<String, String> getResourceMap() {
+        return resourceMap;
     }
 }
 

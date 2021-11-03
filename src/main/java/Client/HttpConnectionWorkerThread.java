@@ -22,12 +22,12 @@ public class HttpConnectionWorkerThread extends Thread {
     public HttpConnectionWorkerThread(Socket socket, ServerListenerThread serverListenerThread) {
         this.socket = socket;
         this.serverListenerThread = serverListenerThread;
-        resourceMap.put("/", "index.html");
+        /*resourceMap.put("/", "index.html");
         resourceMap.put("/index.html", "index.html");
         resourceMap.put("/localhost:3000", "index.html");
         resourceMap.put("/aboutUs.html", "aboutUs.html");
         resourceMap.put("/careers.html", "careers.html");
-        resourceMap.put("/customers.html", "customers.html");
+        resourceMap.put("/customers.html", "customers.html");*/
     }
 
     @Override
@@ -66,9 +66,8 @@ public class HttpConnectionWorkerThread extends Thread {
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
             String css = Files.readString(Paths.get("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\style.css"), StandardCharsets.US_ASCII);
-
+            resourceMap = serverListenerThread.getResourceMap();
             String html;
-            //if (!resource.equals("")) {
             if (resourceMap.containsKey(firstLineResource)) {
                 html = getResponse(firstLineResource);
             } else {
