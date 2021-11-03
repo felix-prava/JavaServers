@@ -10,7 +10,7 @@ public class ServerManager {
     private String maintenanceDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\maintenanceDirectory\\";
     private static ServerListenerThread serverListenerThread = null;
     private boolean serverISRunning = false;
-    private HashMap<String, String> resourceMap;
+    private HashMap<String, String> resourcesMap;
 
     public void setPort(int port) {
         this.port = port;
@@ -75,11 +75,11 @@ public class ServerManager {
         }
     }
 
-    public void setResourceMap(HashMap<String, String> resourceMap) {
-        this.resourceMap = resourceMap;
+    public void setHTMLFiles(HashMap<String, String> resourcesMap) {
+        this.resourcesMap = resourcesMap;
     }
 
-    public HashMap<String, String> getResourceMap() {
-        return resourceMap;
+    public HashMap<String, String> getResourcesMap() {
+        return resourcesMap;
     }
 }

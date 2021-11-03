@@ -18,7 +18,7 @@ public class AdminManager {
                     break;
                 }
                 case 1: {
-                    serverManager.setResourceMap(serverState.getResourceMap());
+                    serverManager.setHTMLFiles(serverState.getResourcesMap());
                     serverManager.setServerOnNormalRunningMode();
                     break;
                 }
@@ -32,7 +32,7 @@ public class AdminManager {
                 }
                 case 4: {
                     serverManager.setRootDirectory(serverState.getRootDirectory());
-                    serverManager.setResourceMap(serverState.getResourceMap());
+                    serverManager.setHTMLFiles(serverState.getResourcesMap());
                     break;
                 }
                 case 5: {

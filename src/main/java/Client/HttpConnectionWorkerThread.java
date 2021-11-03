@@ -17,7 +17,7 @@ public class HttpConnectionWorkerThread extends Thread {
     private Socket socket;
     private ServerListenerThread serverListenerThread;
     private String request;
-    private HashMap<String, String> resourceMap = new HashMap<>();
+    private HashMap<String, String> resourcesMap = new HashMap<>();
 
     public HttpConnectionWorkerThread(Socket socket, ServerListenerThread serverListenerThread) {
         this.socket = socket;
@@ -66,9 +66,9 @@ public class HttpConnectionWorkerThread extends Thread {
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
             String css = Files.readString(Paths.get("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\style.css"), StandardCharsets.US_ASCII);
-            resourceMap = serverListenerThread.getResourceMap();
+            resourcesMap = serverListenerThread.getResourcesMap();
             String html;
-            if (resourceMap.containsKey(firstLineResource)) {
+            if (resourcesMap.containsKey(firstLineResource)) {
                 html = getResponse(firstLineResource);
             } else {
                 html = getResponse(resource);
@@ -122,7 +122,7 @@ public class HttpConnectionWorkerThread extends Thread {
             path = serverListenerThread.getMaintenanceDirectory() + "maintenance.html";
             return Files.readString(Paths.get(path), StandardCharsets.US_ASCII);
         }
-        path += resourceMap.getOrDefault(resource, "pageNotFound.html");
+        path += resourcesMap.getOrDefault(resource, "pageNotFound.html");
         return Files.readString(Paths.get(path), StandardCharsets.US_ASCII);
     }
 }

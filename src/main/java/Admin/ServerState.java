@@ -1,13 +1,6 @@
 package Admin;
 
-import Server.ServerListenerThread;
-
 import java.io.File;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -19,9 +12,8 @@ public class ServerState {
     private Map<Integer, String> menu;
     private String rootDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\";
     private String maintenanceDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\maintenanceDirectory\\";
-    private ServerListenerThread serverListenerThread = null;
-    private boolean serverISRunning = false, serverIsOnMaintenanceMode = false;
-    private HashMap<String, String> resourceMap = new HashMap<>();
+    private boolean serverISRunning = false;
+    private HashMap<String, String> resourcesMap = new HashMap<>();
 
     public ServerState(int state) { this.state = state; }
 
@@ -138,17 +130,17 @@ public class ServerState {
     }
 
     private void updateResources() {
-        resourceMap.clear();
+        resourcesMap.clear();
         File[] files = new File(rootDirectory).listFiles();
         for (File file : files) {
             if (file.isFile()) {
                 if (file.getName().endsWith(".html")) {
                     if (file.getName().equals("index.html")) {
-                        resourceMap.put("/", "index.html");
-                        resourceMap.put("/index.html", "index.html");
-                        resourceMap.put("/localhost:3000", "index.html");
+                        resourcesMap.put("/", "index.html");
+                        resourcesMap.put("/index.html", "index.html");
+                        resourcesMap.put("/localhost:3000", "index.html");
                     } else {
-                        resourceMap.put("/" + file.getName(), file.getName());
+                        resourcesMap.put("/" + file.getName(), file.getName());
                     }
                 }
             }
@@ -234,8 +226,8 @@ public class ServerState {
         return maintenanceDirectory;
     }
 
-    public HashMap<String, String> getResourceMap() {
-        return resourceMap;
+    public HashMap<String, String> getResourcesMap() {
+        return resourcesMap;
     }
 }
 

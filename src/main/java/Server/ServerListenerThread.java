@@ -45,8 +45,8 @@ public class ServerListenerThread extends Thread{
 
     public void setServerStatus(boolean status) { this.serverStatus = status; }
 
-    public HashMap<String, String> getResourceMap() {
-        return serverManager.getResourceMap();
+    public HashMap<String, String> getResourcesMap() {
+        return serverManager.getResourcesMap();
     }
 
     @Override
