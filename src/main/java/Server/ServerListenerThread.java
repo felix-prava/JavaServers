@@ -50,7 +50,7 @@ public class ServerListenerThread extends Thread{
 
     @Override
     public void run() {
-        super.run();
+        //super.run();
         try {
             while (serverSocket.isBound() && !serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
