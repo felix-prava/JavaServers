@@ -74,8 +74,4 @@ public class ServerListenerThread extends Thread{
             }
         }
     }
-
-    public boolean isServerStatus() {
-        return serverStatus;
-    }
 }

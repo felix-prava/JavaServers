@@ -13,7 +13,8 @@ public class ServerState {
     private int state;
     private int port = 3000;
     private Map<Integer, String> menu;
-    private String rootDirectory = "/", maintenanceDirectory = "/";
+    private String rootDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\";
+    private String maintenanceDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\maintenanceDirectory\\";
     private ServerListenerThread serverListenerThread = null;
     private boolean serverISRunning = false, serverIsOnMaintenanceMode = false;
 

@@ -6,10 +6,9 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
-import java.util.Date;
+import java.util.HashMap;
 
 import static java.lang.System.out;
 
@@ -18,25 +17,17 @@ public class HttpConnectionWorkerThread extends Thread {
     private Socket socket;
     private ServerListenerThread serverListenerThread;
     private String request;
-
-    private byte[] readFileData(File file, int fileLength) throws IOException {
-        FileInputStream fileIn = null;
-        byte[] fileData = new byte[fileLength];
-
-        try {
-            fileIn = new FileInputStream(file);
-            fileIn.read(fileData);
-        } finally {
-            if (fileIn != null)
-                fileIn.close();
-        }
-
-        return fileData;
-    }
+    private HashMap<String, String> resourceMap = new HashMap<>();
 
     public HttpConnectionWorkerThread(Socket socket, ServerListenerThread serverListenerThread) {
         this.socket = socket;
         this.serverListenerThread = serverListenerThread;
+        resourceMap.put("/", "index.html");
+        resourceMap.put("/index.html", "index.html");
+        resourceMap.put("/localhost:3000", "index.html");
+        resourceMap.put("/aboutUs.html", "aboutUs.html");
+        resourceMap.put("/careers.html", "careers.html");
+        resourceMap.put("/customers.html", "customers.html");
     }
 
     @Override
@@ -59,7 +50,10 @@ public class HttpConnectionWorkerThread extends Thread {
                 line = br.readLine();
             }
             String firstLine = request.toString().split("\n")[0];
-            String firstLineResource = firstLine.split(" ")[1];
+            String firstLineResource = "";
+            if (firstLine.split(" ").length > 1) {
+                firstLineResource = firstLine.split(" ")[1];
+            }
             out.println("-----------------------------------------------------------------------------");
             out.println(resource);
             out.println(firstLineResource);
@@ -71,13 +65,14 @@ public class HttpConnectionWorkerThread extends Thread {
 
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
-            String css = Files.readString(Paths.get("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\style.css"), StandardCharsets.US_ASCII);
+            String css = Files.readString(Paths.get("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\style.css"), StandardCharsets.US_ASCII);
 
             String html;
-            if (!resource.equals("")) {
-                html = getResponse(resource);
-            } else {
+            //if (!resource.equals("")) {
+            if (resourceMap.containsKey(firstLineResource)) {
                 html = getResponse(firstLineResource);
+            } else {
+                html = getResponse(resource);
             }
             final String CRLF = "\n\r";
             html += css;
@@ -88,7 +83,6 @@ public class HttpConnectionWorkerThread extends Thread {
                     html +
                     CRLF + CRLF;
             outputStream.write(response.getBytes());
-            out.println("Responded to the page");
             outputStream.flush();
             if (serverListenerThread.getServerStatus()) {
                 out.println("--------Connection Processing Finished-------" + " Running");
@@ -124,26 +118,12 @@ public class HttpConnectionWorkerThread extends Thread {
     }
 
     public String getResponse(String resource) throws IOException {
-        String path = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\";
-        out.println(resource);
-        if (resource.equals("/") || resource.equals("/index.html") || resource.equals("/localhost:3000")) {
-            path += "index.html";
-            out.println("Homeee");
-            out.println(request);
-            //return "<html><head><title>Home</title></head><body><h1>Home</h1></body></html>";
-        } else if (resource.equals("/aboutUs.html")) {
-            out.println("This is about us");
-            path += "aboutUs.html";
-        } else if (resource.equals("/careers.html")) {
-            out.println("This is careers");
-            path += "careers.html";
-        } else if (resource.equals("/customers.html")) {
-            path += "customers.html";
-        } else {
-            out.println("Howww " + resource + " bbb");
-            out.println(request);
-            return "<html><head><title>Simple Java Server</title></head><body><h1>Server using simple Java HTTP server</h1></body></html>";
+        String path = serverListenerThread.getRootDirectory();
+        if (!serverListenerThread.getServerStatus()) {
+            path = serverListenerThread.getMaintenanceDirectory() + "maintenance.html";
+            return Files.readString(Paths.get(path), StandardCharsets.US_ASCII);
         }
+        path += resourceMap.getOrDefault(resource, "pageNotFound.html");
         return Files.readString(Paths.get(path), StandardCharsets.US_ASCII);
     }
 }
