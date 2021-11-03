@@ -1,41 +1,30 @@
 package Client;
 
 import Server.ServerListenerThread;
-
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalTime;
 import java.util.HashMap;
-
-import static java.lang.System.out;
 
 public class HttpConnectionWorkerThread extends Thread {
 
     private Socket socket;
     private ServerListenerThread serverListenerThread;
-    private String request;
     private HashMap<String, String> resourcesMap = new HashMap<>();
 
     public HttpConnectionWorkerThread(Socket socket, ServerListenerThread serverListenerThread) {
         this.socket = socket;
         this.serverListenerThread = serverListenerThread;
-        /*resourceMap.put("/", "index.html");
-        resourceMap.put("/index.html", "index.html");
-        resourceMap.put("/localhost:3000", "index.html");
-        resourceMap.put("/aboutUs.html", "aboutUs.html");
-        resourceMap.put("/careers.html", "careers.html");
-        resourceMap.put("/customers.html", "customers.html");*/
     }
 
     @Override
     public void run() {
-        //super.run();
         InputStream inputStream = null;
         OutputStream outputStream = null;
         try {
+            // Read the content of the request
             InputStreamReader isr = new InputStreamReader(socket.getInputStream());
             BufferedReader br = new BufferedReader(isr);
             StringBuilder request = new StringBuilder();
@@ -54,69 +43,52 @@ public class HttpConnectionWorkerThread extends Thread {
             if (firstLine.split(" ").length > 1) {
                 firstLineResource = firstLine.split(" ")[1];
             }
-            out.println("-----------------------------------------------------------------------------");
-            out.println(resource);
-            out.println(firstLineResource);
-            out.println(LocalTime.now());
-            out.println("-----------------------------------------------------------------------------");
-            this.request = request.toString();
-
-
 
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
-            String css = Files.readString(Paths.get("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\style.css"), StandardCharsets.US_ASCII);
             resourcesMap = serverListenerThread.getResourcesMap();
-            String html;
-            if (resourcesMap.containsKey(firstLineResource)) {
-                html = getResponse(firstLineResource);
-            } else {
-                html = getResponse(resource);
+            String css = Files.readString(Paths.get("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\style.css"), StandardCharsets.US_ASCII);
+
+
+            // Get the HTML page based on client's request and write back the response
+            String html, response;
+            if (resourcesMap != null && resourcesMap.containsKey(firstLineResource)) {
+                resource = firstLineResource;
             }
-            final String CRLF = "\n\r";
+            html = getHTMLPage(resource);
             html += css;
-            String response =
-                    "HTTP/1.1 200 OK" + CRLF +
-                    "Content-Length: " + html.getBytes().length + CRLF +
-                    CRLF +
-                    html +
-                    CRLF + CRLF;
+            response = getResponse(html, resource);
+
             outputStream.write(response.getBytes());
             outputStream.flush();
-            if (serverListenerThread.getServerStatus()) {
-                out.println("--------Connection Processing Finished-------" + " Running");
-            } else {
-                out.println("--------Connection Processing Finished-------" + " Maintenance");
-            }
         } catch (IOException e) {
             System.err.println("Problem with comunication:\n" + e);
             e.printStackTrace();
         } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (outputStream != null) {
-                try {
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeEverything(inputStream, outputStream, socket);
         }
     }
 
-    public String getResponse(String resource) throws IOException {
+    private String getResponse(String html, String resource) {
+        final String CRLF = "\n\r";
+        String response;
+        if (!serverListenerThread.getServerStatus()) {
+            response = "HTTP/1.1 503 Service Unavailable" + CRLF;
+        } else {
+            if (resourcesMap.containsKey(resource)) {
+                response = "HTTP/1.1 200 OK" + CRLF;
+            } else {
+                response = "HTTP/1.1 404 Page Not Found" + CRLF;
+            }
+        }
+        response += "Content-Length: " + html.getBytes().length + CRLF +
+                CRLF +
+                html +
+                CRLF + CRLF;
+        return response;
+    }
+
+    public String getHTMLPage(String resource) throws IOException {
         String path = serverListenerThread.getRootDirectory();
         if (!serverListenerThread.getServerStatus()) {
             path = serverListenerThread.getMaintenanceDirectory() + "maintenance.html";
@@ -124,5 +96,29 @@ public class HttpConnectionWorkerThread extends Thread {
         }
         path += resourcesMap.getOrDefault(resource, "pageNotFound.html");
         return Files.readString(Paths.get(path), StandardCharsets.US_ASCII);
+    }
+
+    private void closeEverything(InputStream inputStream, OutputStream outputStream, Socket socket) {
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (outputStream != null) {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

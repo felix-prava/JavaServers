@@ -1,7 +1,6 @@
 package Server;
 
 import Client.HttpConnectionWorkerThread;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -51,12 +50,9 @@ public class ServerListenerThread extends Thread{
 
     @Override
     public void run() {
-        //super.run();
         try {
             while (serverSocket.isBound() && !serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
-                System.out.println("-----Connection accepted------ " + socket.getInetAddress());
-
                 HttpConnectionWorkerThread workerThread = new HttpConnectionWorkerThread(socket, this);
                 workerThread.start();
             }
