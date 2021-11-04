@@ -120,17 +120,17 @@ class ServerStateTest {
     @Test
     @DisplayName("Test if isNumber function returns the correct boolean")
     void isNumberTest() {
-        String sholdReturnTrue = "2021";
-        assertTrue(serverState.isNumber(sholdReturnTrue));
-        String sholdReturnFalse = "2021.20";
-        assertFalse(serverState.isNumber(sholdReturnFalse));
-        sholdReturnFalse = "ABC";
-        assertFalse(serverState.isNumber(sholdReturnFalse));
+        String shouldReturnTrue = "2021";
+        assertTrue(serverState.isNumber(shouldReturnTrue));
+        String shouldReturnFalse = "2021.20";
+        assertFalse(serverState.isNumber(shouldReturnFalse));
+        shouldReturnFalse = "ABC";
+        assertFalse(serverState.isNumber(shouldReturnFalse));
     }
 
     @Test
     public void getMenuTest() {
-        assertEquals(null, serverState.getMenu());
+        assertNull(serverState.getMenu());
         serverState.initializeOptions();
         assertEquals(10, serverState.getMenu().size());
     }
@@ -208,7 +208,7 @@ class ServerStateTest {
     }
 
     @Test
-    public void ServerStateTest() {
+    public void ServerStateConstructorTest() {
         ServerState newServerState = new ServerState(0);
         assertEquals(0, newServerState.getState());
         ServerState anotherServerState = new ServerState(2);
