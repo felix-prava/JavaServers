@@ -21,6 +21,12 @@ public class ServerState {
 
     public void setState(int state) { this.state = state; }
 
+    public void setPort(int port) { this.port = port; }
+
+    public void setRootDirectory(String rootDirectory) { this.rootDirectory = rootDirectory; }
+
+    public void setMaintenanceDirectory(String maintenanceDirectory) { this.maintenanceDirectory = maintenanceDirectory; }
+
     public Map<Integer, String> getMenu() { return menu; }
 
     public int processServerState() {
@@ -52,7 +58,7 @@ public class ServerState {
                         System.out.print("This is not a valid value for the port!\n");
                         return -10;
                     }
-                    this.port = Integer.parseInt(portInput);
+                    setPort(Integer.parseInt(portInput));
                     System.out.println("The new port is: " + this.port + "\n");
                     return 3;
                 } else if (receivedState == 4) {
@@ -65,7 +71,7 @@ public class ServerState {
                     if (!newRootDirectory.endsWith("\\")) {
                         newRootDirectory += "\\";
                     }
-                    this.rootDirectory = newRootDirectory;
+                    setRootDirectory(newRootDirectory);
                     updateResources();
                     System.out.println("The new root directory path is: " + this.rootDirectory + "\n");
                     return 4;
@@ -79,7 +85,7 @@ public class ServerState {
                     if (!newMaintenanceDirectory.endsWith("\\")) {
                         newMaintenanceDirectory += "\\";
                     }
-                    this.maintenanceDirectory = newMaintenanceDirectory;
+                    setMaintenanceDirectory(newMaintenanceDirectory);
                     System.out.println("The new maintenance directory path is: " + this.maintenanceDirectory + "\n");
                     return 5;
                 }
@@ -95,7 +101,7 @@ public class ServerState {
                         if (!newMaintenanceDirectory.endsWith("\\")) {
                             newMaintenanceDirectory += "\\";
                         }
-                        this.maintenanceDirectory = newMaintenanceDirectory;
+                        setMaintenanceDirectory(newMaintenanceDirectory);
                         System.out.println("The new maintenance directory path is: " + this.maintenanceDirectory + "\n");
                         return 5;
                     }
@@ -112,7 +118,7 @@ public class ServerState {
                         if (!newRootDirectory.endsWith("\\")) {
                             newRootDirectory += "\\";
                         }
-                        this.rootDirectory = newRootDirectory;
+                        setRootDirectory(newRootDirectory);
                         updateResources();
                         System.out.println("The new root directory path is: " + this.rootDirectory + "\n");
                         return 4;
@@ -129,25 +135,29 @@ public class ServerState {
         }
     }
 
-    private void updateResources() {
-        resourcesMap.clear();
-        File[] files = new File(rootDirectory).listFiles();
-        for (File file : files) {
-            if (file.isFile()) {
-                if (file.getName().endsWith(".html")) {
-                    if (file.getName().equals("index.html")) {
-                        resourcesMap.put("/", "index.html");
-                        resourcesMap.put("/index.html", "index.html");
-                        resourcesMap.put("/localhost:3000", "index.html");
-                    } else {
-                        resourcesMap.put("/" + file.getName(), file.getName());
+    protected void updateResources() {
+        try {
+            resourcesMap.clear();
+            File[] files = new File(rootDirectory).listFiles();
+            for (File file : files) {
+                if (file.isFile()) {
+                    if (file.getName().endsWith(".html")) {
+                        if (file.getName().equals("index.html")) {
+                            resourcesMap.put("/", "index.html");
+                            resourcesMap.put("/index.html", "index.html");
+                            resourcesMap.put("/localhost:3000", "index.html");
+                        } else {
+                            resourcesMap.put("/" + file.getName(), file.getName());
+                        }
                     }
                 }
             }
+        } catch (Exception ignored) {
+
         }
     }
 
-    private boolean pathIsCorrect(String directoryPath, boolean isRootDirectory) {
+    protected boolean pathIsCorrect(String directoryPath, boolean isRootDirectory) {
         File directory = new File(directoryPath);
         if (!directory.isDirectory()) {
             System.out.println("This path does not correspond to a directory\n");
@@ -204,9 +214,9 @@ public class ServerState {
         }
     }
 
-    private boolean isNumber(String input) {
+    protected boolean isNumber(String input) {
         try {
-            int num = Integer.parseInt(input);
+            Integer.parseInt(input);
             return true;
         } catch (NumberFormatException e) {
             System.out.println("This is not an integer\n");

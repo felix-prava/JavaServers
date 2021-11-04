@@ -2,14 +2,22 @@ package Admin;
 
 import Server.ServerManager;
 
+import java.util.Scanner;
+
 public class AdminManager {
+    private ServerState serverState = new ServerState(0); //server is stopped
+    private ServerManager serverManager = new ServerManager();
+
+    public void initializeOptions() {
+        serverState.initializeOptions();
+    }
+
+    public int getServerState(ServerState serverState) {
+        return serverState.processServerState();
+    }
 
     public void handleOptions() {
-        int state = 0; //server is stopped
-        ServerState serverState = new ServerState(state);
-        ServerManager serverManager = new ServerManager();
-        serverState.initializeOptions();
-        state = serverState.processServerState();
+        int state = getServerState(this.serverState);
 
         while (state != -1) {
             switch (state) {
