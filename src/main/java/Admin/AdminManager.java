@@ -2,8 +2,6 @@ package Admin;
 
 import Server.ServerManager;
 
-import java.util.Scanner;
-
 public class AdminManager {
     private ServerState serverState = new ServerState(0); //server is stopped
     private ServerManager serverManager = new ServerManager();
@@ -12,13 +10,8 @@ public class AdminManager {
         serverState.initializeOptions();
     }
 
-    public int getServerState(ServerState serverState) {
-        return serverState.processServerState();
-    }
-
     public void handleOptions() {
-        int state = getServerState(this.serverState);
-
+        int state = serverState.processServerState();
         while (state != -1) {
             switch (state) {
                 case 0: {
@@ -49,9 +42,13 @@ public class AdminManager {
                 }
                 default: break;
             }
-            state = serverState.processServerState();
+            state = getServerState().processServerState();
         }
         serverManager.closeServer();
         System.out.println("Program is closed successfully");
+    }
+
+    public ServerState getServerState() {
+        return this.serverState;
     }
 }

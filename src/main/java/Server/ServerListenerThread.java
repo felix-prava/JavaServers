@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class ServerListenerThread extends Thread{
 
-    private int port;
+    protected int port;
     private String rootDirectory, maintenanceDirectory;
     private ServerSocket serverSocket;
     private boolean serverStatus;

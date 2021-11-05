@@ -5,11 +5,11 @@ import java.net.ServerSocket;
 import java.util.HashMap;
 
 public class ServerManager {
-    private int port = 3000;
-    private String rootDirectory = "clientWebsite\\rootDirectory\\";
-    private String maintenanceDirectory = "clientWebsite\\maintenanceDirectory\\";
-    private static ServerListenerThread serverListenerThread = null;
-    private boolean serverISRunning = false;
+    protected int port = 3000;
+    protected String rootDirectory = "clientWebsite\\rootDirectory\\";
+    protected String maintenanceDirectory = "clientWebsite\\maintenanceDirectory\\";
+    protected static ServerListenerThread serverListenerThread = null;
+    protected boolean serverISRunning = false;
     private HashMap<String, String> resourcesMap;
 
     public void setPort(int port) {

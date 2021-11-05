@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ServerStateTest {
-    ServerState serverState;
+    private ServerState serverState;
 
     @BeforeEach
     public void setup() {

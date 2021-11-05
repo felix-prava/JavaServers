@@ -12,7 +12,7 @@ public class HttpConnectionWorkerThread extends Thread {
 
     private Socket socket;
     private ServerListenerThread serverListenerThread;
-    private HashMap<String, String> resourcesMap = new HashMap<>();
+    protected HashMap<String, String> resourcesMap = new HashMap<>();
 
     public HttpConnectionWorkerThread(Socket socket, ServerListenerThread serverListenerThread) {
         this.socket = socket;
@@ -65,11 +65,32 @@ public class HttpConnectionWorkerThread extends Thread {
             System.err.println("Problem with comunication:\n" + e);
             e.printStackTrace();
         } finally {
-            closeEverything(inputStream, outputStream, socket);
+            // close everything
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    private String getResponse(String html, String resource) {
+    protected String getResponse(String html, String resource) {
         final String CRLF = "\n\r";
         String response;
         if (!serverListenerThread.getServerStatus()) {
@@ -96,29 +117,5 @@ public class HttpConnectionWorkerThread extends Thread {
         }
         path += resourcesMap.getOrDefault(resource, "pageNotFound.html");
         return Files.readString(Paths.get(path), StandardCharsets.US_ASCII);
-    }
-
-    private void closeEverything(InputStream inputStream, OutputStream outputStream, Socket socket) {
-        if (inputStream != null) {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (outputStream != null) {
-            try {
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
