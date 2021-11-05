@@ -6,8 +6,8 @@ import java.util.HashMap;
 
 public class ServerManager {
     private int port = 3000;
-    private String rootDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\";
-    private String maintenanceDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\maintenanceDirectory\\";
+    private String rootDirectory = "clientWebsite\\rootDirectory\\";
+    private String maintenanceDirectory = "clientWebsite\\maintenanceDirectory\\";
     private static ServerListenerThread serverListenerThread = null;
     private boolean serverISRunning = false;
     private HashMap<String, String> resourcesMap;

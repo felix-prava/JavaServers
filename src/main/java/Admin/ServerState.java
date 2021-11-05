@@ -10,8 +10,8 @@ public class ServerState {
     private int state;
     private int port = 3000;
     private Map<Integer, String> menu;
-    private String rootDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\";
-    private String maintenanceDirectory = "C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\maintenanceDirectory\\";
+    private String rootDirectory = "clientWebsite\\rootDirectory\\";
+    private String maintenanceDirectory = "clientWebsite\\maintenanceDirectory\\";
     private boolean serverISRunning = false;
     private HashMap<String, String> resourcesMap = new HashMap<>();
 
