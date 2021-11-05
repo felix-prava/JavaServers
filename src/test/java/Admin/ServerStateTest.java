@@ -186,7 +186,7 @@ class ServerStateTest {
 
     @Test
     public void getMaintenanceDirectoryTest() {
-        assertEquals("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\maintenanceDirectory\\",
+        assertEquals("clientWebsite\\maintenanceDirectory\\",
                 serverState.getMaintenanceDirectory());
         serverState.setMaintenanceDirectory("\\");
         assertNotEquals("Home", serverState.getMaintenanceDirectory());
@@ -194,7 +194,7 @@ class ServerStateTest {
 
     @Test
     public void getRootDirectoryTest() {
-        assertEquals("C:\\Users\\Mihai\\Desktop\\JavaServersVVS\\clientWebsite\\rootDirectory\\",
+        assertEquals("clientWebsite\\rootDirectory\\",
                 serverState.getRootDirectory());
         serverState.setRootDirectory("\\");
         assertNotEquals("Home", serverState.getRootDirectory());
