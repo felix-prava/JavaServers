@@ -1,10 +1,10 @@
-package Server;
+package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.HashMap;
 
-public class ServerManager {
+public final class ServerManager {
     protected int port = 3000;
     protected String rootDirectory = "clientWebsite\\rootDirectory\\";
     protected String maintenanceDirectory = "clientWebsite\\maintenanceDirectory\\";
@@ -12,22 +12,22 @@ public class ServerManager {
     protected boolean serverISRunning = false;
     private HashMap<String, String> resourcesMap;
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setPort(int _port) {
+        this.port = _port;
         if (serverListenerThread != null) {
             serverListenerThread.setPort(port);
         }
     }
 
-    public void setRootDirectory(String rootDirectory) {
-        this.rootDirectory = rootDirectory;
+    public void setRootDirectory(String _rootDirectory) {
+        this.rootDirectory = _rootDirectory;
         if (serverListenerThread != null) {
             serverListenerThread.setRootDirectory(rootDirectory);
         }
     }
 
-    public void setMaintenanceDirectory(String maintenanceDirectory) {
-        this.maintenanceDirectory = maintenanceDirectory;
+    public void setMaintenanceDirectory(String _maintenanceDirectory) {
+        this.maintenanceDirectory = _maintenanceDirectory;
         if (serverListenerThread != null) {
             serverListenerThread.setMaintenanceDirectory(maintenanceDirectory);
         }
@@ -75,8 +75,8 @@ public class ServerManager {
         }
     }
 
-    public void setHTMLFiles(HashMap<String, String> resourcesMap) {
-        this.resourcesMap = resourcesMap;
+    public void setHTMLFiles(HashMap<String, String> _resourcesMap) {
+        this.resourcesMap = _resourcesMap;
     }
 
     public HashMap<String, String> getResourcesMap() {

@@ -1,8 +1,8 @@
-package Admin;
+package admin;
 
-import Server.ServerManager;
+import server.ServerManager;
 
-public class AdminManager {
+public final class AdminManager {
     private ServerState serverState = new ServerState(0); //server is stopped
     private ServerManager serverManager = new ServerManager();
 

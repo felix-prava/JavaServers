@@ -1,10 +1,14 @@
-import Admin.AdminManager;
+import admin.AdminManager;
 
-public class HttpServer {
+public final class HttpServer {
 
     public static void main(String[] args) {
         AdminManager adminManager = new AdminManager();
         adminManager.initializeOptions();
         adminManager.handleOptions();
+    }
+
+    private HttpServer() {
+
     }
 }

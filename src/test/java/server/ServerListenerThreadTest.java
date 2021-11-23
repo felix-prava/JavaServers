@@ -1,11 +1,10 @@
-package Server;
+package server;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;

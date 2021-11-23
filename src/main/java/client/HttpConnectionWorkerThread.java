@@ -1,6 +1,6 @@
-package Client;
+package client;
 
-import Server.ServerListenerThread;
+import server.ServerListenerThread;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -8,15 +8,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-public class HttpConnectionWorkerThread extends Thread {
+public final class HttpConnectionWorkerThread extends Thread {
 
     private Socket socket;
     private ServerListenerThread serverListenerThread;
     protected HashMap<String, String> resourcesMap = new HashMap<>();
 
-    public HttpConnectionWorkerThread(Socket socket, ServerListenerThread serverListenerThread) {
-        this.socket = socket;
-        this.serverListenerThread = serverListenerThread;
+    public HttpConnectionWorkerThread(Socket _socket, ServerListenerThread _serverListenerThread) {
+        this.socket = _socket;
+        this.serverListenerThread = _serverListenerThread;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class HttpConnectionWorkerThread extends Thread {
     }
 
     protected String getResponse(String html, String resource) {
-        final String CRLF = "\n\r";
+        String CRLF = "\n\r";
         String response;
         if (!serverListenerThread.getServerStatus()) {
             response = "HTTP/1.1 503 Service Unavailable" + CRLF;

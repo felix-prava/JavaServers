@@ -1,7 +1,7 @@
-package Client;
+package client;
 
-import Server.ServerListenerThread;
-import Server.ServerManager;
+import server.ServerListenerThread;
+import server.ServerManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

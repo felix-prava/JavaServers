@@ -1,12 +1,12 @@
-package Server;
+package server;
 
-import Client.HttpConnectionWorkerThread;
+import client.HttpConnectionWorkerThread;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class ServerListenerThread extends Thread{
+public final class ServerListenerThread extends Thread{
 
     protected int port;
     private String rootDirectory, maintenanceDirectory;
@@ -14,35 +14,35 @@ public class ServerListenerThread extends Thread{
     private boolean serverStatus;
     private ServerManager serverManager;
 
-    public ServerListenerThread(int port, String rootDirectory, String maintenanceDirectory, ServerManager serverManager) throws IOException {
-        this.port = port;
-        this.rootDirectory = rootDirectory;
-        this.maintenanceDirectory = maintenanceDirectory;
+    public ServerListenerThread(int _port, String _rootDirectory, String _maintenanceDirectory, ServerManager _serverManager) throws IOException {
+        this.port = _port;
+        this.rootDirectory = _rootDirectory;
+        this.maintenanceDirectory = _maintenanceDirectory;
         this.serverSocket = new ServerSocket(this.port);
-        this.serverManager = serverManager;
+        this.serverManager = _serverManager;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setPort(int _port) {
+        this.port = _port;
     }
 
     public String getRootDirectory() {
         return rootDirectory;
     }
 
-    public void setRootDirectory(String rootDirectory) { this.rootDirectory = rootDirectory; }
+    public void setRootDirectory(String _rootDirectory) { this.rootDirectory = _rootDirectory; }
 
     public String getMaintenanceDirectory() { return maintenanceDirectory; }
 
-    public void setMaintenanceDirectory(String maintenanceDirectory) {
-        this.maintenanceDirectory = maintenanceDirectory;
+    public void setMaintenanceDirectory(String _maintenanceDirectory) {
+        this.maintenanceDirectory = _maintenanceDirectory;
     }
 
     public ServerSocket getServerSocket() { return serverSocket; }
 
     public boolean getServerStatus() { return serverStatus; }
 
-    public void setServerStatus(boolean status) { this.serverStatus = status; }
+    public void setServerStatus(boolean _status) { this.serverStatus = _status; }
 
     public HashMap<String, String> getResourcesMap() {
         return serverManager.getResourcesMap();
