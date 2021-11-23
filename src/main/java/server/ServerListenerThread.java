@@ -14,35 +14,35 @@ public final class ServerListenerThread extends Thread{
     private boolean serverStatus;
     private ServerManager serverManager;
 
-    public ServerListenerThread(int _port, String _rootDirectory, String _maintenanceDirectory, ServerManager _serverManager) throws IOException {
-        this.port = _port;
-        this.rootDirectory = _rootDirectory;
-        this.maintenanceDirectory = _maintenanceDirectory;
+    public ServerListenerThread(int portReceived, String rootDirectoryReceived, String maintenanceDirectoryReceived, ServerManager serverManagerReceived) throws IOException {
+        this.port = portReceived;
+        this.rootDirectory = rootDirectoryReceived;
+        this.maintenanceDirectory = maintenanceDirectoryReceived;
         this.serverSocket = new ServerSocket(this.port);
-        this.serverManager = _serverManager;
+        this.serverManager = serverManagerReceived;
     }
 
-    public void setPort(int _port) {
-        this.port = _port;
+    public void setPort(int portReceived) {
+        this.port = portReceived;
     }
 
     public String getRootDirectory() {
         return rootDirectory;
     }
 
-    public void setRootDirectory(String _rootDirectory) { this.rootDirectory = _rootDirectory; }
+    public void setRootDirectory(String rootDirectoryReceived) { this.rootDirectory = rootDirectoryReceived; }
 
     public String getMaintenanceDirectory() { return maintenanceDirectory; }
 
-    public void setMaintenanceDirectory(String _maintenanceDirectory) {
-        this.maintenanceDirectory = _maintenanceDirectory;
+    public void setMaintenanceDirectory(String maintenanceDirectoryReceived) {
+        this.maintenanceDirectory = maintenanceDirectoryReceived;
     }
 
     public ServerSocket getServerSocket() { return serverSocket; }
 
     public boolean getServerStatus() { return serverStatus; }
 
-    public void setServerStatus(boolean _status) { this.serverStatus = _status; }
+    public void setServerStatus(boolean statusReceived) { this.serverStatus = statusReceived; }
 
     public HashMap<String, String> getResourcesMap() {
         return serverManager.getResourcesMap();

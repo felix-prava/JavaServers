@@ -5,29 +5,31 @@ import java.net.ServerSocket;
 import java.util.HashMap;
 
 public final class ServerManager {
-    protected int port = 3000;
+    public static final int DEFAULT_PORT = 3000;
+
+    protected int port = DEFAULT_PORT;
     protected String rootDirectory = "clientWebsite\\rootDirectory\\";
     protected String maintenanceDirectory = "clientWebsite\\maintenanceDirectory\\";
     protected static ServerListenerThread serverListenerThread = null;
     protected boolean serverISRunning = false;
     private HashMap<String, String> resourcesMap;
 
-    public void setPort(int _port) {
-        this.port = _port;
+    public void setPort(int portReceived) {
+        this.port = portReceived;
         if (serverListenerThread != null) {
             serverListenerThread.setPort(port);
         }
     }
 
-    public void setRootDirectory(String _rootDirectory) {
-        this.rootDirectory = _rootDirectory;
+    public void setRootDirectory(String rootDirectoryReceived) {
+        this.rootDirectory = rootDirectoryReceived;
         if (serverListenerThread != null) {
             serverListenerThread.setRootDirectory(rootDirectory);
         }
     }
 
-    public void setMaintenanceDirectory(String _maintenanceDirectory) {
-        this.maintenanceDirectory = _maintenanceDirectory;
+    public void setMaintenanceDirectory(String maintenanceDirectoryReceived) {
+        this.maintenanceDirectory = maintenanceDirectoryReceived;
         if (serverListenerThread != null) {
             serverListenerThread.setMaintenanceDirectory(maintenanceDirectory);
         }
@@ -75,8 +77,8 @@ public final class ServerManager {
         }
     }
 
-    public void setHTMLFiles(HashMap<String, String> _resourcesMap) {
-        this.resourcesMap = _resourcesMap;
+    public void setHTMLFiles(HashMap<String, String> resourcesMapReceived) {
+        this.resourcesMap = resourcesMapReceived;
     }
 
     public HashMap<String, String> getResourcesMap() {

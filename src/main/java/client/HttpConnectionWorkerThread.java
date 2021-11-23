@@ -14,9 +14,9 @@ public final class HttpConnectionWorkerThread extends Thread {
     private ServerListenerThread serverListenerThread;
     protected HashMap<String, String> resourcesMap = new HashMap<>();
 
-    public HttpConnectionWorkerThread(Socket _socket, ServerListenerThread _serverListenerThread) {
-        this.socket = _socket;
-        this.serverListenerThread = _serverListenerThread;
+    public HttpConnectionWorkerThread(Socket socketReceived, ServerListenerThread serverListenerThreadReceived) {
+        this.socket = socketReceived;
+        this.serverListenerThread = serverListenerThreadReceived;
     }
 
     @Override

@@ -18,17 +18,19 @@ public final class ServerState {
     private boolean serverISRunning = false;
     private HashMap<String, String> resourcesMap = new HashMap<>();
 
-    public ServerState(int _state) { this.state = _state; }
+    public ServerState(int stateReceived) { this.state = stateReceived; }
 
     public int getState() { return state; }
 
-    public void setState(int _state) { this.state = _state; }
+    public void setState(int stateReceived) { this.state = stateReceived; }
 
-    public void setPort(int _port) { this.port = _port; }
+    public void setPort(int portReceived) { this.port = portReceived; }
 
-    public void setRootDirectory(String _rootDirectory) { this.rootDirectory = _rootDirectory; }
+    public void setRootDirectory(String rootDirectoryReceived) { this.rootDirectory = rootDirectoryReceived; }
 
-    public void setMaintenanceDirectory(String _maintenanceDirectory) { this.maintenanceDirectory = _maintenanceDirectory; }
+    public void setMaintenanceDirectory(String maintenanceDirectoryReceived) {
+        this.maintenanceDirectory = maintenanceDirectoryReceived;
+    }
 
     public Map<Integer, String> getMenu() { return menu; }
 
