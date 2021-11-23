@@ -1,32 +1,10 @@
 import admin.AdminManager;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
-public final class HttpServer extends Application {
+public final class HttpServer {
 
     public static void main(String[] args) {
-        launch(args);
         AdminManager adminManager = new AdminManager();
         adminManager.initializeOptions();
         adminManager.handleOptions();
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello World!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(event -> System.out.println("Hello World!"));
-
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
-        primaryStage.show();
     }
 }
