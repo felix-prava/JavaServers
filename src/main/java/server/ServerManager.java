@@ -15,7 +15,9 @@ public final class ServerManager {
     private HashMap<String, String> resourcesMap;
 
     public void setPort(int portReceived) {
+        System.out.println(portReceived + " EEFEFGRGRB");
         this.port = portReceived;
+        System.out.println(port + " NNNNNNN");
         if (serverListenerThread != null) {
             serverListenerThread.setPort(port);
         }
@@ -69,6 +71,7 @@ public final class ServerManager {
     public void openServer() {
         if (serverListenerThread == null) {
             try {
+                System.out.println(port + " MMMMMMMMMMMMM");
                 serverListenerThread = new ServerListenerThread(port, rootDirectory, maintenanceDirectory, this);
                 serverListenerThread.start();
             } catch (IOException e) {
