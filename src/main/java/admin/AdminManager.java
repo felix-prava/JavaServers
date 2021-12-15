@@ -96,11 +96,43 @@ public final class AdminManager extends Application {
         portLabel2.setText(Integer.toString(newPort));
 
         TextField textField1 = (TextField) maintenanceServerScene.lookup("#nonEditableTextField1");
-        TextField textField2 = (TextField) normalServerScene.lookup("#normalModeRootDirectoryField");
+        TextField textField2 = (TextField) normalServerScene.lookup("#normalModePortField");
         textField1.setPromptText(Integer.toString(newPort));
         textField2.setPromptText(Integer.toString(newPort));
+        portField.setPromptText(Integer.toString(newPort));
+        portField.setText("");
+    }
 
+    public void changeRootDirectory(boolean isFromServerStoppedScene) {
+        TextField textField1 = (TextField) serverStoppedScene.lookup("#rootDirectoryField");
+        TextField textField2 = (TextField) maintenanceServerScene.lookup("#rootDirectoryField");
+        TextField textField3 = (TextField) normalServerScene.lookup("#normalModeRootDirectoryField");
+        String newRootDirectory = isFromServerStoppedScene ? textField1.getText() : textField2.getText();
+        if (!serverState.pathIsCorrect(newRootDirectory, true)) {
+            // TO DO show error message
+            System.out.println("ERROR");
+            return;
+        }
+        if (!newRootDirectory.endsWith("\\")) {
+            newRootDirectory += "\\";
+        }
+        textField1.setPromptText(newRootDirectory);
+        textField2.setPromptText(newRootDirectory);
+        textField1.setText("");
+        textField2.setText("");
+        textField3.setPromptText(newRootDirectory);
+        this.rootDirectory = (newRootDirectory);
+        serverManager.setRootDirectory(newRootDirectory);
+        serverState.setRootDirectory(newRootDirectory);
+        serverState.updateResources();
+        serverManager.setHTMLFiles(serverState.getResourcesMap());
+    }
 
+    public void changeMaintenanceDirectory(boolean isFromServerStoppedScene) {
+        if (serverState.pathIsCorrect("path", false)) {
+            return;
+        }
+        System.out.println("TEST");
     }
 
     @Override
@@ -115,19 +147,5 @@ public final class AdminManager extends Application {
         maintenanceServerScene = new Scene(rootMaintenanceMode);
         primaryStage.setScene(serverStoppedScene);
         primaryStage.show();
-        /*Button btn = (Button) scene.lookup("#updatePort");
-        btn.setOnAction(event -> {
-            System.out.println("Hello World!");
-            TextField portField = (TextField) scene.lookup("#serverPortField");
-            serverManager.setPort(Integer.parseInt(portField.getText()));
-            serverState.updateResources();
-            serverManager.closeServer();
-            serverManager.setHTMLFiles(serverState.getResourcesMap());
-            serverManager.setServerOnNormalRunningMode();
-            //primaryStage.setScene(normalModeScene);
-            //primaryStage.show();
-        });*/
     }
-
-
 }

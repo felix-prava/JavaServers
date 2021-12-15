@@ -28,13 +28,13 @@
         <Label layoutX="53.0" layoutY="239.0" text="Server Listening On Port:" />
         <Label layoutX="53.0" layoutY="282.0" text="Web Root Directory:" />
         <Label layoutX="53.0" layoutY="323.0" text="Maintenance Directory:" />
-        <TextField id="normalModeRootMaintenanceField" layoutX="210.0" layoutY="319.0" prefHeight="25.0" prefWidth="156.0" promptText="\\clientWebsite\maintenanceDirectory\" />
+        <TextField id="normalModeRootMaintenanceField" layoutX="210.0" layoutY="319.0" prefHeight="25.0" prefWidth="202.0" promptText="\\clientWebsite\maintenanceDirectory\" />
         <Button id="closeServerButton" layoutX="351.0" layoutY="80.0" mnemonicParsing="false" onAction="#closeServer" text="Close Server" />
         <Label layoutX="210.0" layoutY="54.0" text="running.." />
         <Label id="normalModePortDisplay" layoutX="210.0" layoutY="84.0" text="3000" />
       <Button id="maintenanceModeButton" layoutX="457.0" layoutY="80.0" mnemonicParsing="false" onAction="#putServerOnMaintenanceMode" text="Maintenance" />
-      <Button id="normalModeUpdateDirectoryButton" layoutX="406.0" layoutY="319.0" mnemonicParsing="false" text="Update Maintenance Directory" />
-      <TextField id="maintenanceDirectoryField" editable="false" layoutX="210.0" layoutY="278.0" prefHeight="25.0" prefWidth="156.0" promptText="\\clientWebsite\rootDirectory\" />
-      <TextField id="normalModeRootDirectoryField" editable="false" layoutX="210.0" layoutY="235.0" prefHeight="25.0" prefWidth="47.0" promptText="3000" />
+      <Button id="normalModeUpdateDirectoryButton" layoutX="432.0" layoutY="319.0" mnemonicParsing="false" onAction="#changeMaintenanceDirectory2" text="Update Maintenance Directory" />
+      <TextField id="normalModeRootDirectoryField" editable="false" layoutX="210.0" layoutY="278.0" prefHeight="25.0" prefWidth="202.0" promptText="\\clientWebsite\rootDirectory\" />
+      <TextField id="normalModePortField" editable="false" layoutX="210.0" layoutY="235.0" prefHeight="25.0" prefWidth="47.0" promptText="3000" />
     </children>
 </Pane>

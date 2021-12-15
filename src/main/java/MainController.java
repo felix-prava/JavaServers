@@ -30,4 +30,20 @@ public final class MainController {
     public void putServerOnNormalMode() {
         adminManager.setServerOnNormalMode();
     }
+
+    public void changeRootDirectory1() {
+        adminManager.changeRootDirectory(true);
+    }
+
+    public void changeRootDirectory2() {
+        adminManager.changeRootDirectory(false);
+    }
+
+    public void changeMaintenanceDirectory1() {
+        adminManager.changeMaintenanceDirectory(true);
+    }
+
+    public void changeMaintenanceDirectory2() {
+        adminManager.changeMaintenanceDirectory(false);
+    }
 }

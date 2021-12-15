@@ -29,14 +29,14 @@
       <Label layoutX="53.0" layoutY="282.0" text="Web Root Directory:" />
       <Label layoutX="53.0" layoutY="323.0" text="Meintenance Directory:" />
       <TextField id="serverPortField" layoutX="210.0" layoutY="235.0" prefHeight="25.0" prefWidth="55.0" promptText="3000" />
-      <TextField id="rootDirectoryField" layoutX="210.0" layoutY="278.0" prefHeight="25.0" prefWidth="156.0" promptText="\\\clientWebsite\rootDirectory\" />
-      <TextField id="maintenanceDirectoryField" layoutX="210.0" layoutY="319.0" prefHeight="25.0" prefWidth="156.0" promptText="\\\clientWebsite\maintenanceDirectory\" />
+      <TextField id="rootDirectoryField" layoutX="210.0" layoutY="278.0" prefHeight="25.0" prefWidth="204.0" promptText="\\\clientWebsite\rootDirectory\" />
+      <TextField id="maintenanceDirectoryField" layoutX="210.0" layoutY="319.0" prefHeight="25.0" prefWidth="204.0" promptText="\\\clientWebsite\maintenanceDirectory\" />
       <Button id="startServerButton" layoutX="373.0" layoutY="80.0" mnemonicParsing="false" onAction="#startServerNormalMode" text="Start Server" />
       <Label layoutX="210.0" layoutY="54.0" text="not running" />
       <Label layoutX="210.0" layoutY="84.0" text="not running" />
       <Button id="updatePort" layoutX="431.0" layoutY="235.0" mnemonicParsing="false" onAction="#updatePort" text="Change Port" />
-      <Button id="updateRootDirectory" layoutX="431.0" layoutY="278.0" mnemonicParsing="false" text="Change Root Directory" />
-      <Button id="updateMaintenanceDirectory" layoutX="431.0" layoutY="319.0" mnemonicParsing="false" text="Change Maintenance Directory" />
+      <Button id="updateRootDirectory" layoutX="431.0" layoutY="278.0" mnemonicParsing="false" onAction="#changeRootDirectory1" text="Change Root Directory" />
+      <Button id="updateMaintenanceDirectory" layoutX="431.0" layoutY="319.0" mnemonicParsing="false" onAction="#changeMaintenanceDirectory1" text="Change Maintenance Directory" />
       <Label id="errorMessage" layoutX="288.0" layoutY="368.0" />
    </children>
 </Pane>
