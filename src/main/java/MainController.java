@@ -19,7 +19,15 @@ public final class MainController {
         adminManager.startServer();
     }
 
-    public void serverStoppedUpdatePort() throws IOException {
-        adminManager.serverStoppedUpdatePort();
+    public void updatePort() throws IOException {
+        adminManager.updatePort();
+    }
+
+    public void putServerOnMaintenanceMode() {
+        adminManager.setServerOnMaintenanceMode();
+    }
+
+    public void putServerOnNormalMode() {
+        adminManager.setServerOnNormalMode();
     }
 }
