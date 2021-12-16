@@ -22,7 +22,6 @@ public final class ServerManager {
     }
 
     public void setRootDirectory(String rootDirectoryReceived) {
-        System.out.println(rootDirectoryReceived);
         this.rootDirectory = rootDirectoryReceived;
         if (serverListenerThread != null) {
             serverListenerThread.setRootDirectory(rootDirectory);

@@ -117,20 +117,21 @@ public final class AdminManager extends Application {
         TextField textField1 = (TextField) serverStoppedScene.lookup("#maintenanceDirectoryField");
         TextField textField2 = (TextField) maintenanceServerScene.lookup("#maintenanceDirectoryField");
         TextField textField3 = (TextField) normalServerScene.lookup("#normalModeRootMaintenanceField");
-        String newRootDirectory = isFromServerStoppedScene ? textField1.getText() : textField3.getText();
+        String newMaintenanceDirectory = isFromServerStoppedScene ? textField1.getText() : textField3.getText();
         textField1.setText("");
         textField3.setText("");
-        if (!serverState.pathIsCorrect(newRootDirectory, false)) {
+        if (!serverState.pathIsCorrect(newMaintenanceDirectory, false)) {
             displayErrorMessage("The Path Is Not Valid For A Maintenance Directory");
             return;
         }
-        textField1.setPromptText(newRootDirectory);
-        textField2.setPromptText(newRootDirectory);
-        textField3.setPromptText(newRootDirectory);
-        serverManager.setRootDirectory(newRootDirectory);
-        serverState.setRootDirectory(newRootDirectory);
-        serverState.updateResources();
-        serverManager.setHTMLFiles(serverState.getResourcesMap());
+        if (!newMaintenanceDirectory.endsWith("\\")) {
+            newMaintenanceDirectory += "\\";
+        }
+        textField1.setPromptText(newMaintenanceDirectory);
+        textField2.setPromptText(newMaintenanceDirectory);
+        textField3.setPromptText(newMaintenanceDirectory);
+        serverManager.setMaintenanceDirectory(newMaintenanceDirectory);
+        serverState.setMaintenanceDirectory(newMaintenanceDirectory);
     }
 
     @Override

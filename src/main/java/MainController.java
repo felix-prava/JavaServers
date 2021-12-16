@@ -5,7 +5,7 @@ import java.io.IOException;
 public final class MainController {
     private static AdminManager adminManager;
 
-    public void closeServer() throws IOException {
+    public void closeServer() {
         adminManager.stopServer();
     }
 
@@ -13,11 +13,11 @@ public final class MainController {
         this.adminManager = adminManager;
     }
 
-    public void startServerNormalMode() throws IOException {
+    public void startServerNormalMode() {
         adminManager.startServer();
     }
 
-    public void updatePort() throws IOException {
+    public void updatePort() {
         adminManager.updatePort();
     }
 
