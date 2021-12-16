@@ -1,6 +1,4 @@
 import admin.AdminManager;
-import admin.NormalModeController;
-import javafx.scene.control.TextField;
 
 import java.io.IOException;
 

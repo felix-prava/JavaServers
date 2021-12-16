@@ -35,6 +35,7 @@
         <Button id="normalModeButton" layoutX="457.0" layoutY="80.0" mnemonicParsing="false" onAction="#putServerOnNormalMode" text="Normal Mode" />
         <Button id="maintenanceModeUpdateDirectoryButton" layoutX="457.0" layoutY="278.0" mnemonicParsing="false" onAction="#changeRootDirectory2" text="Update Root Directory" />
       <TextField id="nonEditableTextField1" editable="false" layoutX="201.0" layoutY="235.0" prefHeight="25.0" prefWidth="68.0" promptText="3000" />
-      <TextField id="rootDirectoryField" editable="false" layoutX="201.0" layoutY="319.0" prefHeight="25.0" prefWidth="235.0" promptText="\\clientWebsite\maintenanceDirectory\" />
+      <TextField id="maintenanceDirectoryField" editable="false" layoutX="201.0" layoutY="319.0" prefHeight="25.0" prefWidth="235.0" promptText="\\clientWebsite\maintenanceDirectory\" />
+      <Label id="errorMessageMaintenanceModeScene" layoutX="198.0" layoutY="375.0" text="Error Message" textFill="#e42d36" />
     </children>
 </Pane>

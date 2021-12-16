@@ -8,23 +8,14 @@ import server.ServerManager;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public final class AdminManager extends Application {
-    public static final int DEFAULT_PORT = 3000;
-    private int port = DEFAULT_PORT;
-    private String rootDirectory = "clientWebsite\\rootDirectory\\";
-    private String maintenanceDirectory = "clientWebsite\\maintenanceDirectory\\";
 
     private static Stage primaryStage;
     private static Scene serverStoppedScene, normalServerScene, maintenanceServerScene;
-
 
     private ServerState serverState = new ServerState(0); //server is stopped
     private ServerManager serverManager = new ServerManager();
@@ -35,21 +26,6 @@ public final class AdminManager extends Application {
 
     public ServerState getServerState() {
         return this.serverState;
-    }
-
-    public void setPort(int portReceived) {
-        this.port = portReceived;
-        serverManager.setPort(portReceived);
-    }
-
-    public int getPort() {
-        return this.port;
-    }
-
-    public void setRootDirectory(String rootDirectoryReceived) { this.rootDirectory = rootDirectoryReceived; }
-
-    public void setMaintenanceDirectory(String maintenanceDirectoryReceived) {
-        this.maintenanceDirectory = maintenanceDirectoryReceived;
     }
 
     public void initializeOptions() {
@@ -66,29 +42,39 @@ public final class AdminManager extends Application {
         serverManager.closeServer();
         serverManager.setHTMLFiles(serverState.getResourcesMap());
         serverManager.setServerOnNormalRunningMode();
+        restoreErrorMessages();
         primaryStage.setScene(normalServerScene);
     }
 
     public void setServerOnMaintenanceMode() {
         serverManager.setServerOnMaintenanceMode();
+        restoreErrorMessages();
         primaryStage.setScene(maintenanceServerScene);
     }
 
     public void setServerOnNormalMode() {
         serverManager.setServerOnNormalRunningMode();
+        restoreErrorMessages();
         primaryStage.setScene(normalServerScene);
     }
 
     public void stopServer() {
         serverManager.closeServer();
+        restoreErrorMessages();
         primaryStage.setScene(serverStoppedScene);
     }
 
     public void updatePort() {
+        restoreErrorMessages();
         TextField portField = (TextField) serverStoppedScene.lookup("#serverPortField");
-        int newPort = Integer.parseInt(portField.getText());
+        String portVal = portField.getText();
+        portField.setText("");
+        if (!portIsValid(portVal)) {
+            displayErrorMessage("The Value For The Port Is Not Valid");
+            return;
+        }
+        int newPort = Integer.parseInt(portVal);
         serverManager.setPort(newPort);
-        this.port = newPort;
 
         Label portLabel = (Label) normalServerScene.lookup("#normalModePortDisplay");
         Label portLabel2 = (Label) maintenanceServerScene.lookup("#maintenanceModePortDisplay");
@@ -100,17 +86,18 @@ public final class AdminManager extends Application {
         textField1.setPromptText(Integer.toString(newPort));
         textField2.setPromptText(Integer.toString(newPort));
         portField.setPromptText(Integer.toString(newPort));
-        portField.setText("");
     }
 
     public void changeRootDirectory(boolean isFromServerStoppedScene) {
+        restoreErrorMessages();
         TextField textField1 = (TextField) serverStoppedScene.lookup("#rootDirectoryField");
         TextField textField2 = (TextField) maintenanceServerScene.lookup("#rootDirectoryField");
         TextField textField3 = (TextField) normalServerScene.lookup("#normalModeRootDirectoryField");
         String newRootDirectory = isFromServerStoppedScene ? textField1.getText() : textField2.getText();
+        textField1.setText("");
+        textField2.setText("");
         if (!serverState.pathIsCorrect(newRootDirectory, true)) {
-            // TO DO show error message
-            System.out.println("ERROR");
+            displayErrorMessage("The Path Is Not Valid For A Root Directory");
             return;
         }
         if (!newRootDirectory.endsWith("\\")) {
@@ -118,10 +105,7 @@ public final class AdminManager extends Application {
         }
         textField1.setPromptText(newRootDirectory);
         textField2.setPromptText(newRootDirectory);
-        textField1.setText("");
-        textField2.setText("");
         textField3.setPromptText(newRootDirectory);
-        this.rootDirectory = (newRootDirectory);
         serverManager.setRootDirectory(newRootDirectory);
         serverState.setRootDirectory(newRootDirectory);
         serverState.updateResources();
@@ -129,10 +113,24 @@ public final class AdminManager extends Application {
     }
 
     public void changeMaintenanceDirectory(boolean isFromServerStoppedScene) {
-        if (serverState.pathIsCorrect("path", false)) {
+        restoreErrorMessages();
+        TextField textField1 = (TextField) serverStoppedScene.lookup("#maintenanceDirectoryField");
+        TextField textField2 = (TextField) maintenanceServerScene.lookup("#maintenanceDirectoryField");
+        TextField textField3 = (TextField) normalServerScene.lookup("#normalModeRootMaintenanceField");
+        String newRootDirectory = isFromServerStoppedScene ? textField1.getText() : textField3.getText();
+        textField1.setText("");
+        textField3.setText("");
+        if (!serverState.pathIsCorrect(newRootDirectory, false)) {
+            displayErrorMessage("The Path Is Not Valid For A Maintenance Directory");
             return;
         }
-        System.out.println("TEST");
+        textField1.setPromptText(newRootDirectory);
+        textField2.setPromptText(newRootDirectory);
+        textField3.setPromptText(newRootDirectory);
+        serverManager.setRootDirectory(newRootDirectory);
+        serverState.setRootDirectory(newRootDirectory);
+        serverState.updateResources();
+        serverManager.setHTMLFiles(serverState.getResourcesMap());
     }
 
     @Override
@@ -145,7 +143,43 @@ public final class AdminManager extends Application {
         serverStoppedScene = new Scene(rootStopped);
         normalServerScene = new Scene(rootNormalMode);
         maintenanceServerScene = new Scene(rootMaintenanceMode);
+        restoreErrorMessages();
         primaryStage.setScene(serverStoppedScene);
         primaryStage.show();
     }
+
+    public void restoreErrorMessages() {
+        Label errorMessage1 = (Label) serverStoppedScene.lookup("#errorMessageStoppedScene");
+        Label errorMessage2 = (Label) maintenanceServerScene.lookup("#errorMessageMaintenanceModeScene");
+        Label errorMessage3 = (Label) normalServerScene.lookup("#errorMessageNormalModeScene");
+
+        errorMessage1.setText("");
+        errorMessage2.setText("");
+        errorMessage3.setText("");
+    }
+
+    public void displayErrorMessage(String message) {
+        Label errorMessage1 = (Label) serverStoppedScene.lookup("#errorMessageStoppedScene");
+        Label errorMessage2 = (Label) maintenanceServerScene.lookup("#errorMessageMaintenanceModeScene");
+        Label errorMessage3 = (Label) normalServerScene.lookup("#errorMessageNormalModeScene");
+
+        errorMessage1.setText(message);
+        errorMessage2.setText(message);
+        errorMessage3.setText(message);
+    }
+
+    public boolean portIsValid(String port) {
+        System.out.println(port);
+        try {
+            int intValPort = Integer.parseInt(port);
+            System.out.println(intValPort);
+            return (intValPort >= 1000 && intValPort <= 10000);
+        } catch (NumberFormatException e) {
+            System.out.println("EXCEPTION");
+            return false; //String is not an Integer
+        }
+    }
 }
+
+// C:\Users\Mihai\Desktop\test
+// C:\Users\Mihai\Desktop\maintenanceDirectory
