@@ -4,9 +4,15 @@ public final class HttpServer {
 
     public static void main(String[] args) {
         AdminManager adminManager = new AdminManager();
-        MainController mainController = new MainController();
-        mainController.setAdminManager(adminManager);
-        adminManager.initializeOptions();
-        adminManager.handleOptions();
+
+        ServerStoppedController serverStoppedController = new ServerStoppedController();
+        NormalModeServerController normalModeServerController = new NormalModeServerController();
+        MaintenanceModeController maintenanceModeController = new MaintenanceModeController();
+
+        serverStoppedController.setAdminManager(adminManager);
+        normalModeServerController.setAdminManager(adminManager);
+        maintenanceModeController.setAdminManager(adminManager);
+
+        adminManager.startProgram();
     }
 }

@@ -17,22 +17,11 @@ public final class AdminManager extends Application {
     private static Stage primaryStage;
     private static Scene serverStoppedScene, normalServerScene, maintenanceServerScene;
 
-    private ServerState serverState = new ServerState(0); //server is stopped
+    private ServerState serverState = new ServerState();
     private ServerManager serverManager = new ServerManager();
 
-    public ServerManager getServerManager() {
-        return this.serverManager;
-    }
-
-    public ServerState getServerState() {
-        return this.serverState;
-    }
-
-    public void initializeOptions() {
-        serverState.initializeOptions();
-    }
-
-    public void handleOptions() {
+    public void startProgram() {
+        serverState.updateResources();
         launch();
         serverManager.closeServer();
     }
@@ -96,8 +85,9 @@ public final class AdminManager extends Application {
         String newRootDirectory = isFromServerStoppedScene ? textField1.getText() : textField2.getText();
         textField1.setText("");
         textField2.setText("");
-        if (!serverState.pathIsCorrect(newRootDirectory, true)) {
-            displayErrorMessage("The Path Is Not Valid For A Root Directory");
+        String check = serverState.pathIsCorrect(newRootDirectory, true);
+        if (!check.equals("OK")) {
+            displayErrorMessage(check);
             return;
         }
         if (!newRootDirectory.endsWith("\\")) {
@@ -120,8 +110,9 @@ public final class AdminManager extends Application {
         String newMaintenanceDirectory = isFromServerStoppedScene ? textField1.getText() : textField3.getText();
         textField1.setText("");
         textField3.setText("");
-        if (!serverState.pathIsCorrect(newMaintenanceDirectory, false)) {
-            displayErrorMessage("The Path Is Not Valid For A Maintenance Directory");
+        String check = serverState.pathIsCorrect(newMaintenanceDirectory, false);
+        if (!check.equals("OK")) {
+            displayErrorMessage(check);
             return;
         }
         if (!newMaintenanceDirectory.endsWith("\\")) {
@@ -170,13 +161,10 @@ public final class AdminManager extends Application {
     }
 
     public boolean portIsValid(String port) {
-        System.out.println(port);
         try {
             int intValPort = Integer.parseInt(port);
-            System.out.println(intValPort);
             return (intValPort >= 1000 && intValPort <= 10000);
         } catch (NumberFormatException e) {
-            System.out.println("EXCEPTION");
             return false; //String is not an Integer
         }
     }

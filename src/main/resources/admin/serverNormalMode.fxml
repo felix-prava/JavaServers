@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="418.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="418.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NormalModeServerController">
     <children>
         <Label layoutX="33.0" layoutY="25.0" text="WebServer Info">
             <font>
@@ -33,7 +33,7 @@
         <Label layoutX="210.0" layoutY="54.0" text="running.." />
         <Label id="normalModePortDisplay" layoutX="210.0" layoutY="84.0" text="3000" />
       <Button id="maintenanceModeButton" layoutX="457.0" layoutY="80.0" mnemonicParsing="false" onAction="#putServerOnMaintenanceMode" text="Maintenance" />
-      <Button id="normalModeUpdateDirectoryButton" layoutX="432.0" layoutY="319.0" mnemonicParsing="false" onAction="#changeMaintenanceDirectory2" text="Update Maintenance Directory" />
+      <Button id="normalModeUpdateDirectoryButton" layoutX="432.0" layoutY="319.0" mnemonicParsing="false" onAction="#changeMaintenanceDirectory" text="Update Maintenance Directory" />
       <TextField id="normalModeRootDirectoryField" editable="false" layoutX="210.0" layoutY="278.0" prefHeight="25.0" prefWidth="202.0" promptText="\\clientWebsite\rootDirectory\" />
       <TextField id="normalModePortField" editable="false" layoutX="210.0" layoutY="235.0" prefHeight="25.0" prefWidth="47.0" promptText="3000" />
       <Label id="errorMessageNormalModeScene" layoutX="210.0" layoutY="375.0" text="Error Message" textFill="#e42d36" />

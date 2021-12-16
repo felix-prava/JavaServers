@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ServerStateTest {
     private ServerState serverState;
-
+    /*
     @BeforeEach
     public void setup() {
         serverState = new ServerState(0);
@@ -97,7 +97,7 @@ class ServerStateTest {
         // Create a html file in homePath folder
         assertEquals(1, serverState.getResourcesMap().size());
         // Delete file
-    } */
+    }
 
     @Test
     @DisplayName("pathIsCorrect function should return false when the path does not exist")
@@ -106,7 +106,6 @@ class ServerStateTest {
         assertFalse(serverState.pathIsCorrect("\\should_not_exist", false));
     }
 
-    /*
     @Test
     @DisplayName("pathIsCorrect function should return true after creating a folder in the home directory")
     void pathIsCorrectTest2() {
@@ -115,7 +114,7 @@ class ServerStateTest {
         // Create a folder with a pageNotFound.html file in homePath
         assertTrue(serverState.pathIsCorrect(homePath, true));
         // Delete file and folder
-    } */
+    }
 
     @Test
     @DisplayName("Test if isNumber function returns the correct boolean")
@@ -182,7 +181,7 @@ class ServerStateTest {
         } finally {
             assertEquals(0, serverState.getResourcesMap().size());
         }
-    }
+    } */
 
     @Test
     public void getMaintenanceDirectoryTest() {
@@ -206,7 +205,7 @@ class ServerStateTest {
         serverState.setPort(3001);
         assertNotEquals(20000, serverState.getPort());
     }
-
+    /*
     @Test
     public void ServerStateConstructorTest() {
         ServerState newServerState = new ServerState(0);
@@ -214,5 +213,5 @@ class ServerStateTest {
         ServerState anotherServerState = new ServerState(2);
         assertEquals(2, anotherServerState.getState());
         assertNotEquals(3, anotherServerState.getState());
-    }
+    } */
 }
