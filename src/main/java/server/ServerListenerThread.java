@@ -52,7 +52,6 @@ public final class ServerListenerThread extends Thread{
     public void run() {
         try {
             while (serverSocket.isBound() && !serverSocket.isClosed()) {
-                this.serverStatus = true;
                 Socket socket = serverSocket.accept();
                 HttpConnectionWorkerThread workerThread = new HttpConnectionWorkerThread(socket, this);
                 workerThread.start();
@@ -66,10 +65,8 @@ public final class ServerListenerThread extends Thread{
             if (serverSocket != null) {
                 try {
                     serverSocket.close();
-                    serverStatus = false;
                 } catch (IOException e) {
                     e.printStackTrace();
-                    serverStatus = false;
                 }
             }
         }
