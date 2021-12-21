@@ -1,51 +1,88 @@
 package admin;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import server.ServerManager;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AdminManagerTest {
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class AdminManagerTest extends Application {
+
     private AdminManager adminManager;
 
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        adminManager.setPrimaryStage(primaryStage);
+        primaryStage.setTitle("Java Servers Test");
+        Parent rootStopped = FXMLLoader.load(getClass().getResource("serverStopped.fxml"));
+        Parent rootNormalMode = FXMLLoader.load(getClass().getResource("serverNormalMode.fxml"));
+        Parent rootMaintenanceMode = FXMLLoader.load(getClass().getResource("serverMaintenanceMode.fxml"));
+        AdminManager.setServerStoppedScene( new Scene(rootStopped));
+        AdminManager.setMaintenanceServerScene(new Scene(rootMaintenanceMode));
+        AdminManager.setNormalServerScene(new Scene(rootNormalMode));
+        adminManager.restoreErrorMessages();
+        primaryStage.setScene(AdminManager.getServerStoppedScene());
+        primaryStage.show();
+    }
+
     @BeforeEach
-    public void setup() {
+    void setup() {
         adminManager = new AdminManager();
     }
-/*
-    @DisplayName("Test if the menu contains different keys")
-    @ParameterizedTest
-    @ValueSource(ints = {-1, 0, 1, 2, 3, 4, 5, 100, 101, 102})
-    void initializeOptionsTest(int key) {
-        adminManager.initializeOptions();
-        ServerState serverState = adminManager.getServerState();
-        Assertions.assertTrue(serverState.getMenu().containsKey(key));
+
+    @Test
+    void startProgramTest() {
+        adminManager.startProgram();
     }
 
-    @DisplayName("Test if the menu contains different values")
-    @ParameterizedTest
-    @ValueSource (strings = {"Close the program", "Change the root directory of the server", "Put the server on normal mode"})
-    void initializeOptionsTest2(String value) {
-        adminManager.initializeOptions();
-        ServerState serverState = adminManager.getServerState();
-        Assertions.assertTrue(serverState.getMenu().containsValue(value));
+    @Test
+    void startServerTest() {
     }
 
-    @DisplayName("Test if the menu do not contains different keys")
-    @ParameterizedTest
-    @ValueSource (ints = {-2, 7, 99})
-    void initializeOptionsTest3(int key) {
-        adminManager.initializeOptions();
-        ServerState serverState = adminManager.getServerState();
-        Assertions.assertFalse(serverState.getMenu().containsKey(key));
+    @Test
+    void setServerOnMaintenanceModeTest() {
     }
 
-    @DisplayName("Test if the menu do not contains different values")
-    @ParameterizedTest
-    @ValueSource (strings = {"Close this program", "Change the root directory of the server ", "Change the server on normal mode"})
-    void initializeOptionsTest4(String value) {
-        adminManager.initializeOptions();
-        ServerState serverState = adminManager.getServerState();
-        Assertions.assertFalse(serverState.getMenu().containsValue(value));
-    } */
+    @Test
+    void setServerOnNormalModeTest() {
+    }
+
+    @Test
+    void stopServerTest() {
+    }
+
+    @Test
+    void updatePortTest() {
+    }
+
+    @Test
+    void changeRootDirectoryTest() {
+    }
+
+    @Test
+    void changeMaintenanceDirectoryTest() {
+    }
+
+    @Test
+    void startTest() {
+    }
+
+    @Test
+    void restoreErrorMessagesTest() {
+    }
+
+    @Test
+    void displayErrorMessageTest() {
+    }
+
+    @Test
+    void portIsValidTest() {
+    }
 }

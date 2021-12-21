@@ -30,6 +30,7 @@ class HttpConnectionWorkerThreadTest {
             "        </div>\n" +
             "    </body>\n" +
             "</html>";
+
     private final String unavailableResponse = "HTTP/1.1 503 Service Unavailable\n" +
             "\n" +
             "Content-Length: 494\n" +
@@ -53,6 +54,7 @@ class HttpConnectionWorkerThreadTest {
             "        </div>\n" +
             "    </body>\n" +
             "</html>\n\n\n";
+
     private String HTMLPage = expectedResponse;
 
     @Test
@@ -130,11 +132,4 @@ class HttpConnectionWorkerThreadTest {
         String response = thread.getResponse(HTMLPage, "\\index.html");
         assertTrue(response.contains("HTTP/1.1 200 OK"));
     }
-
-    /*
-    @Test
-    void closeEverythingTest() {
-
-    }
-    */
 }

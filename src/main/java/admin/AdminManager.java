@@ -168,7 +168,52 @@ public final class AdminManager extends Application {
             return false; //String is not an Integer
         }
     }
-}
 
-// C:\Users\Mihai\Desktop\test
-// C:\Users\Mihai\Desktop\maintenanceDirectory
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public static void setMaintenanceServerScene(Scene maintenanceServerScene) {
+        AdminManager.maintenanceServerScene = maintenanceServerScene;
+    }
+
+    public static void setNormalServerScene(Scene normalServerScene) {
+        AdminManager.normalServerScene = normalServerScene;
+    }
+
+    public static void setPrimaryStage(Stage primaryStage) {
+        AdminManager.primaryStage = primaryStage;
+    }
+
+    public void setServerManager(ServerManager serverManager) {
+        this.serverManager = serverManager;
+    }
+
+    public void setServerState(ServerState serverState) {
+        this.serverState = serverState;
+    }
+
+    public static void setServerStoppedScene(Scene serverStoppedScene) {
+        AdminManager.serverStoppedScene = serverStoppedScene;
+    }
+
+    public ServerState getServerState() {
+        return serverState;
+    }
+
+    public ServerManager getServerManager() {
+        return serverManager;
+    }
+
+    public static Scene getMaintenanceServerScene() {
+        return maintenanceServerScene;
+    }
+
+    public static Scene getNormalServerScene() {
+        return normalServerScene;
+    }
+
+    public static Scene getServerStoppedScene() {
+        return serverStoppedScene;
+    }
+}

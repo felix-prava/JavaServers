@@ -70,8 +70,10 @@ public final class ServerManager {
         if (serverListenerThread == null) {
             try {
                 serverListenerThread = new ServerListenerThread(port, rootDirectory, maintenanceDirectory, this);
+                serverISRunning = true;
                 serverListenerThread.start();
             } catch (IOException e) {
+                serverISRunning = false;
                 System.out.println("Input Output Exception");
             }
         }

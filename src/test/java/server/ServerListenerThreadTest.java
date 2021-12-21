@@ -20,12 +20,12 @@ class ServerListenerThreadTest {
 
     @Test
     void setPortTest() throws IOException {
-        serverManager.setPort(3000);
+        serverManager.setPort(3090);
         ServerListenerThread serverListenerThread =
-                new ServerListenerThread(3000, serverManager.rootDirectory, serverManager.maintenanceDirectory, serverManager);
+                new ServerListenerThread(3090, serverManager.rootDirectory, serverManager.maintenanceDirectory, serverManager);
         serverListenerThread.setPort(8080);
         assertEquals(8080, serverListenerThread.port);
-        assertNotEquals(3000, serverListenerThread.port);
+        assertNotEquals(3090, serverListenerThread.port);
     }
 
     @Test
@@ -89,7 +89,7 @@ class ServerListenerThreadTest {
         // it should be false initially
         assertFalse(serverListenerThread.getServerStatus());
 
-        //the server is running on normal mode
+        // the server is running on normal mode
         serverManager.setServerOnNormalRunningMode();
         assertTrue(serverListenerThread.getServerStatus());
     }
@@ -127,6 +127,7 @@ class ServerListenerThreadTest {
     /*
     @Test
     void runTest() {
+
     }
     */
 }

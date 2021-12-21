@@ -18,6 +18,23 @@ class ServerManagerTest {
     }
 
     @Test
+    void openServerTest() {
+        ServerManager secondServerManager = new ServerManager();
+        assertNull(secondServerManager.serverListenerThread);
+
+        secondServerManager.port = 2345;
+        secondServerManager.openServer();
+        assertNotNull(secondServerManager.serverListenerThread);
+        assertEquals(secondServerManager.serverISRunning, true);
+
+        secondServerManager.closeServer();
+        secondServerManager.port = 2345;
+        secondServerManager.openServer();
+        assertEquals(secondServerManager.serverISRunning, true);
+        assertEquals(secondServerManager.serverListenerThread.port, 2345);
+    }
+
+    @Test
     void setHTMLFilesTest() {
         // empty HashMap
         HashMap<String, String> resourcesMap = new HashMap<>();
@@ -30,18 +47,25 @@ class ServerManagerTest {
 
         assertEquals(1, serverManager.getResourcesMap().size());
         assertTrue(serverManager.getResourcesMap().containsKey("key"));
-        assertFalse(serverManager.getResourcesMap().containsValue("valuee"));
+        assertFalse(serverManager.getResourcesMap().containsValue("value24"));
+
+        serverManager.closeServer();
     }
 
-    /*
+
     @Test
     void closeServerTest() {
-    }
+        ServerManager secondServerManager = new ServerManager();
+        assertNull(secondServerManager.serverListenerThread);
 
-    @Test
-    void openServerTest() {
+        secondServerManager.port = 3456;
+        secondServerManager.openServer();
+        assertNotNull(secondServerManager.serverListenerThread);
+
+        secondServerManager.closeServer();
+        assertNull(secondServerManager.serverListenerThread);
+        assertEquals(secondServerManager.serverISRunning, false);
     }
-    */
 
     @Test
     void getResourcesMapTest() {
@@ -100,13 +124,12 @@ class ServerManagerTest {
     }
 
     @Test
-    void setServerOnNormalRunningModeTest() throws IOException {
+    void setServerNormalModeTest() throws  IOException {
         ServerListenerThread serverListenerThread =
-                new ServerListenerThread(20000, serverManager.rootDirectory, serverManager.maintenanceDirectory, serverManager);
+                new ServerListenerThread(10004, serverManager.rootDirectory, serverManager.maintenanceDirectory, serverManager);
         serverManager.serverListenerThread = serverListenerThread;
 
         serverManager.setServerOnNormalRunningMode();
         assertTrue(serverManager.serverListenerThread.getServerStatus());
     }
-
 }
