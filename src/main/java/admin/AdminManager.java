@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public final class AdminManager extends Application {
+public class AdminManager extends Application {
 
     private static Stage primaryStage;
     private static Scene serverStoppedScene, normalServerScene, maintenanceServerScene;

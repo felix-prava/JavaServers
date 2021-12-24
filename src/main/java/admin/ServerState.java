@@ -3,7 +3,7 @@ package admin;
 import java.io.File;
 import java.util.HashMap;
 
-public final class ServerState {
+public class ServerState {
 
     public static final int DEFAULT_PORT = 3000;
     private int port = DEFAULT_PORT;

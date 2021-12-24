@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.HashMap;
 
-public final class ServerManager {
+public class ServerManager {
     public static final int DEFAULT_PORT = 3000;
 
     protected int port = DEFAULT_PORT;

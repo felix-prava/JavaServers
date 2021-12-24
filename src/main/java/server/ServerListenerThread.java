@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-public final class ServerListenerThread extends Thread{
+public class ServerListenerThread extends Thread{
 
     protected int port;
     private String rootDirectory, maintenanceDirectory;

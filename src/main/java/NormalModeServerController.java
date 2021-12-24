@@ -1,6 +1,6 @@
 import admin.AdminManager;
 
-public final class NormalModeServerController {
+public class NormalModeServerController {
     private static AdminManager adminManager;
 
     public void setAdminManager(AdminManager adminManager) {

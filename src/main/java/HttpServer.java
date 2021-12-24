@@ -15,4 +15,7 @@ public final class HttpServer {
 
         adminManager.startProgram();
     }
+
+    // C:\Users\Mihai\Desktop\test
+    // C:\Users\Mihai\Desktop\maintenanceDirectory
 }

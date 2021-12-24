@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-public final class HttpConnectionWorkerThread extends Thread {
+public class HttpConnectionWorkerThread extends Thread {
 
     private Socket socket;
     private ServerListenerThread serverListenerThread;

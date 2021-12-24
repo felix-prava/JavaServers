@@ -1,6 +1,6 @@
 import admin.AdminManager;
 
-public final class MaintenanceModeController {
+public class MaintenanceModeController {
     private static AdminManager adminManager;
 
     public void setAdminManager(AdminManager adminManager) {

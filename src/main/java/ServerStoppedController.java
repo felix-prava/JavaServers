@@ -1,6 +1,6 @@
 import admin.AdminManager;
 
-public final class ServerStoppedController {
+public class ServerStoppedController {
     private static AdminManager adminManager;
 
     public void setAdminManager(AdminManager adminManager) {
