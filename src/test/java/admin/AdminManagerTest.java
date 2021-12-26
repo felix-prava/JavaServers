@@ -1,88 +1,145 @@
 package admin;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import server.ServerManager;
-
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class AdminManagerTest extends Application {
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-    private AdminManager adminManager;
+import server.ServerManager;
 
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        adminManager.setPrimaryStage(primaryStage);
-        primaryStage.setTitle("Java Servers Test");
-        Parent rootStopped = FXMLLoader.load(getClass().getResource("serverStopped.fxml"));
-        Parent rootNormalMode = FXMLLoader.load(getClass().getResource("serverNormalMode.fxml"));
-        Parent rootMaintenanceMode = FXMLLoader.load(getClass().getResource("serverMaintenanceMode.fxml"));
-        AdminManager.setServerStoppedScene( new Scene(rootStopped));
-        AdminManager.setMaintenanceServerScene(new Scene(rootMaintenanceMode));
-        AdminManager.setNormalServerScene(new Scene(rootNormalMode));
-        adminManager.restoreErrorMessages();
-        primaryStage.setScene(AdminManager.getServerStoppedScene());
-        primaryStage.show();
-    }
+import static org.mockito.Mockito.*;
 
-    @BeforeEach
-    void setup() {
-        adminManager = new AdminManager();
-    }
+public class AdminManagerTest {
 
-    @Test
-    void startProgramTest() {
-        adminManager.startProgram();
+    static AdminManager adminManager;
+    static ServerManager serverManager;
+    static ServerState serverState;
+
+    @BeforeAll
+    public static void setup() {
+        AdminManager admin = new AdminManager();
+        adminManager = spy(admin);
+        // adminManager.startProgram();
+        serverManager = mock(ServerManager.class);
+        serverState = mock(ServerState.class);
+
+        adminManager.setServerManager(serverManager);
+        adminManager.setServerState(serverState);
     }
 
     @Test
-    void startServerTest() {
+    public void startServerTest() {
+        try {
+            doThrow(new RuntimeException()).when(adminManager).restoreErrorMessages();
+            adminManager.startServer();
+            verify(adminManager).startServer();
+            verify(serverManager).closeServer();
+            verify(serverManager).setHTMLFiles(any());
+            verify(serverManager).setServerOnNormalRunningMode();
+        } catch (RuntimeException e) {
+
+        }
     }
 
     @Test
     void setServerOnMaintenanceModeTest() {
+        try {
+            doThrow(new RuntimeException()).when(adminManager).restoreErrorMessages();
+            adminManager.setServerOnMaintenanceMode();
+            verify(adminManager).setServerOnMaintenanceMode();
+            verify(serverManager).setServerOnMaintenanceMode();
+        } catch (RuntimeException e) {
+
+        }
     }
 
     @Test
     void setServerOnNormalModeTest() {
+        try {
+            doThrow(new RuntimeException()).when(adminManager).restoreErrorMessages();
+            adminManager.setServerOnNormalMode();
+            verify(adminManager).setServerOnNormalMode();
+            verify(serverManager).setServerOnNormalRunningMode();
+        } catch (RuntimeException e) {
+
+        }
     }
 
     @Test
     void stopServerTest() {
+        try {
+            doThrow(new RuntimeException()).when(adminManager).restoreErrorMessages();
+            adminManager.stopServer();
+            verify(adminManager).stopServer();
+            verify(serverManager).closeServer();
+        } catch (RuntimeException e) {
+
+        }
     }
 
     @Test
     void updatePortTest() {
+        try {
+            doThrow(new RuntimeException()).when(adminManager).updatePort();
+            adminManager.updatePort();
+            fail("updatePort method have not been invoked.");
+        } catch (RuntimeException e) {
+
+        }
     }
 
     @Test
     void changeRootDirectoryTest() {
+        try {
+            doThrow(new RuntimeException()).when(adminManager).changeRootDirectory(anyBoolean());
+            adminManager.changeRootDirectory(true);
+            fail("changeRootDirectory method have not been invoked.");
+        } catch (RuntimeException e) {
+
+        }
     }
 
     @Test
     void changeMaintenanceDirectoryTest() {
-    }
+        try {
+            doThrow(new RuntimeException()).when(adminManager).changeMaintenanceDirectory(anyBoolean());
+            adminManager.changeMaintenanceDirectory(true);
+            fail("changeMaintenanceDirectory method have not been invoked.");
+        } catch (RuntimeException e) {
 
-    @Test
-    void startTest() {
+        }
     }
 
     @Test
     void restoreErrorMessagesTest() {
+        try {
+            doThrow(new RuntimeException()).when(adminManager).restoreErrorMessages();
+            adminManager.restoreErrorMessages();
+            fail("restoreErrorMessages method have not been invoked.");
+        } catch (RuntimeException e) {
+
+        }
     }
 
     @Test
     void displayErrorMessageTest() {
+        try {
+            doThrow(new RuntimeException()).when(adminManager).displayErrorMessage(anyString());
+            adminManager.displayErrorMessage("test message");;
+            fail("displayErrorMessage method have not been invoked.");
+        } catch (RuntimeException e) {
+
+        }
     }
 
     @Test
     void portIsValidTest() {
+        assertTrue(adminManager.portIsValid("1000"));
+        assertTrue(adminManager.portIsValid("5000"));
+        assertTrue(adminManager.portIsValid("10000"));
+
+        assertFalse(adminManager.portIsValid("999"));
+        assertFalse(adminManager.portIsValid("10001"));
     }
+
 }

@@ -1,7 +1,7 @@
 import admin.AdminManager;
 
 public class MaintenanceModeController {
-    private static AdminManager adminManager;
+    protected static AdminManager adminManager;
 
     public void setAdminManager(AdminManager adminManager) {
         this.adminManager = adminManager;

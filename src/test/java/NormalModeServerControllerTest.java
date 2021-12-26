@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import server.ServerManager;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 class NormalModeServerControllerTest {
 
@@ -12,32 +14,46 @@ class NormalModeServerControllerTest {
 
     @BeforeEach
     void setup() {
-        normalModeServerController = new NormalModeServerController();
-        AdminManager adminManager = new AdminManager();
-        this.adminManager = adminManager;
+        NormalModeServerController controller = new NormalModeServerController();
+        // spying on real object
+        normalModeServerController = spy(controller);
+        // mock Creation
+        adminManager = mock(AdminManager.class);
         normalModeServerController.setAdminManager(adminManager);
     }
 
     @Test
     void setAdminManagerTest() {
         AdminManager secondAdminManager = new AdminManager();
-        /* assertNotEquals(normalModeServerController.adminManager, secondAdminManager);
+        assertNotEquals(secondAdminManager, normalModeServerController.adminManager);
         normalModeServerController.setAdminManager(secondAdminManager);
-        assertEquals(normalModeServerController.adminManager, secondAdminManager); */
+        assertEquals(secondAdminManager, normalModeServerController.adminManager);
     }
 
     @Test
     void closeServerTest() {
-        //adminManager.startProgram();
-        //adminManager.startServer();
-        //assertFalse(adminManager.getServerManager().getResourcesMap().isEmpty());
+        normalModeServerController.closeServer();
+        // verify that closeServer() method in spying NormalModeServerController object have been invoked
+        verify(normalModeServerController).closeServer();
+        // verify that stopServer() method in mocked AdminManager object have been invoked
+        verify(adminManager).stopServer();
     }
 
     @Test
     void putServerOnMaintenanceModeTest() {
+        normalModeServerController.putServerOnMaintenanceMode();
+        // verify that putServerOnMaintenanceMode() method in spying NormalModeServerController object have been invoked
+        verify(normalModeServerController).putServerOnMaintenanceMode();
+        // verify that setServerOnMaintenanceMode() method in mocked AdminManager object have been invoked
+        verify(adminManager).setServerOnMaintenanceMode();
     }
 
     @Test
     void changeMaintenanceDirectoryTest() {
+        normalModeServerController.changeMaintenanceDirectory();
+        // verify that changeMaintenanceDirectory() method in spying NormalModeServerController object have been invoked
+        verify(normalModeServerController).changeMaintenanceDirectory();
+        // verify that changeMaintenanceDirectory(boolean) method in mocked AdminManager object have been invoked
+        verify(adminManager).changeMaintenanceDirectory(false);
     }
 }
